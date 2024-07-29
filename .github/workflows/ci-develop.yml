@@ -1,0 +1,57 @@
+name: Build & Deploy Develop Branch
+
+on:
+  push:
+    branches: [ develop ]
+
+concurrency:
+  group: ${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
+
+jobs:
+
+  build-push-docker:
+    runs-on: [ self-hosted, linux, x64, oneauxilia-cicd ]
+    env:
+      BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
+      ENV: staging
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Build and push to Gitlab Registry
+      run: |
+        export GITHUB_SHORT_SHA="$(echo $GITHUB_SHA | cut -c1-8)"
+        docker build --build-arg ENV -t $GITLAB_REGISTRY/$APP_NAME:$BRANCH_NAME-$GITHUB_SHORT_SHA -t $GITLAB_REGISTRY/$APP_NAME:$BRANCH_NAME .
+        docker push $GITLAB_REGISTRY/$APP_NAME:$BRANCH_NAME-$GITHUB_SHORT_SHA
+        if [[ -n "$APP_PROCESSES" ]]; then
+          IFS=', ' read -ra subapps <<< $APP_PROCESSES
+          for subapp in "${subapps[@]}"; do
+            sed -i "s#IMAGE_NAME#$GITLAB_REGISTRY/$APP_NAME#g" $subapp.Dockerfile
+            sed -i "s#IMAGE_TAG#$BRANCH_NAME#g" $subapp.Dockerfile
+            docker build --build-arg ENV -t $GITLAB_REGISTRY/$APP_NAME/$subapp:$BRANCH_NAME-$GITHUB_SHORT_SHA -t $GITLAB_REGISTRY/$APP_NAME/$subapp:$BRANCH_NAME -f $subapp.Dockerfile .
+            docker push $GITLAB_REGISTRY/$APP_NAME/$subapp:$BRANCH_NAME-$GITHUB_SHORT_SHA
+          done
+        fi
+
+  deploy-kubernetes:
+    needs: build-push-docker
+    runs-on: [ self-hosted, linux, x64, oneauxilia-cicd ]
+    env:
+      BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
+      ENV: staging
+      VERSION: v1.0
+    steps:
+    - name: Sync deployment to Argocd
+      run: |
+        curl_params="${WEBHOOKD_URL}?application=${APP_NAME}&branch=${BRANCH_NAME}&commit=${GITHUB_SHA}&version=${VERSION}"
+        curl_output=$(curl --compressed -sS -H 'Connection: keep-alive' -u "${WEBHOOKD_BASIC_AUTH}" $curl_params)
+        curl_output_file="/tmp/${APP_NAME}_${BRANCH_NAME}_${GITHUB_SHA}_${VERSION}"
+        echo "$curl_output" > $curl_output_file
+        echo $curl_output
+        if grep -q "Patching done!" $curl_output_file; then
+          rm $curl_output_file
+          exit 0
+        else
+          rm $curl_output_file
+          exit 1
+        fi
