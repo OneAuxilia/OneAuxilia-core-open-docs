@@ -1,0 +1,1332 @@
+basePath: /api/v1/
+definitions:
+  dto.ApiKeyConf:
+    properties:
+      jwt_private_key:
+        type: string
+      jwt_public_key:
+        type: string
+      public_key:
+        type: string
+      secret_keys:
+        items:
+          $ref: '#/definitions/dto.SecretKeyConf'
+        type: array
+    type: object
+  dto.AuthenticationSetting:
+    properties:
+      email_verification_link:
+        $ref: '#/definitions/dto.BaseSetting'
+      passkey:
+        $ref: '#/definitions/dto.BaseSetting'
+      password:
+        $ref: '#/definitions/dto.BaseSetting'
+      sms_verification_code:
+        $ref: '#/definitions/dto.BaseSetting'
+    type: object
+  dto.AuthorizeReq:
+    properties:
+      codename:
+        description: Codename string `json:"codename" validate:"required"`
+        type: string
+      groups:
+        items:
+          type: integer
+        type: array
+      user_id:
+        type: integer
+    type: object
+  dto.BaseSetting:
+    properties:
+      is_enable:
+        type: boolean
+      setting:
+        $ref: '#/definitions/dto.SettingValue'
+    type: object
+  dto.ContactSetting:
+    properties:
+      email:
+        $ref: '#/definitions/dto.BaseSetting'
+      phone_number:
+        $ref: '#/definitions/dto.BaseSetting'
+    type: object
+  dto.GoogleAuthenticator:
+    properties:
+      auth_type:
+        type: string
+      code:
+        type: string
+      secret:
+        type: string
+      user_id:
+        type: integer
+    type: object
+  dto.GroupSchamas:
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+  dto.JWTConfig:
+    properties:
+      access_token_lifetime:
+        type: integer
+      auth_header_name:
+        type: string
+      auth_header_type:
+        type: string
+      claim:
+        type: string
+      is_rotate_refresh_token:
+        type: boolean
+      issuer:
+        type: string
+      refresh_token_lifetime:
+        type: integer
+      signing_algorithm:
+        type: string
+      signing_key:
+        type: string
+      signing_key_pub:
+        type: string
+    type: object
+  dto.LoginAuth:
+    properties:
+      application_id:
+        type: string
+      code:
+        type: string
+      domain:
+        type: string
+      id:
+        type: string
+      instance_id:
+        type: string
+      is_deleted:
+        type: boolean
+      jwt_config:
+        $ref: '#/definitions/dto.JWTConfig'
+      last_ip:
+        type: string
+      mode:
+        type: integer
+      password:
+        type: string
+      schema_name:
+        type: string
+      session:
+        $ref: '#/definitions/dto.SessionSetting'
+      social_connections:
+        $ref: '#/definitions/dto.SocialSetting'
+      user_agent:
+        type: string
+      user_general_setting:
+        $ref: '#/definitions/dto.UserSetting'
+      userId:
+        type: integer
+      username:
+        type: string
+    type: object
+  dto.MultiFactorProvider:
+    properties:
+      is_enable:
+        type: boolean
+      name:
+        type: string
+      order:
+        type: integer
+      type:
+        type: string
+    type: object
+  dto.MultiFactorSetting:
+    properties:
+      methods:
+        items:
+          $ref: '#/definitions/dto.MultiFactorProvider'
+        type: array
+    type: object
+  dto.PermissionSetting:
+    type: object
+  dto.PersonalSetting:
+    properties:
+      name:
+        $ref: '#/definitions/dto.BaseSetting'
+    type: object
+  dto.RecoveryCodeDto:
+    properties:
+      application_id:
+        type: string
+      auth_type:
+        type: string
+      code:
+        type: string
+      domain:
+        type: string
+      email:
+        type: string
+      id:
+        type: string
+      instance_id:
+        type: string
+      is_deleted:
+        type: boolean
+      jwt_config:
+        $ref: '#/definitions/dto.JWTConfig'
+      last_ip:
+        type: string
+      mode:
+        type: integer
+      schema_name:
+        type: string
+      session:
+        $ref: '#/definitions/dto.SessionSetting'
+      social_connections:
+        $ref: '#/definitions/dto.SocialSetting'
+      user_agent:
+        type: string
+      user_general_setting:
+        $ref: '#/definitions/dto.UserSetting'
+      userId:
+        type: integer
+    type: object
+  dto.RefreshAuth:
+    properties:
+      refresh_token:
+        type: string
+    type: object
+  dto.ResetPassUser:
+    properties:
+      new_password:
+        maxLength: 128
+        minLength: 6
+        type: string
+      new_password_confirm:
+        type: string
+    required:
+    - new_password
+    type: object
+  dto.ScocialLoginBody:
+    properties:
+      application_id:
+        type: string
+      client_id:
+        type: string
+      code:
+        type: string
+      domain:
+        type: string
+      id:
+        type: string
+      instance_id:
+        type: string
+      is_deleted:
+        type: boolean
+      jwt_config:
+        $ref: '#/definitions/dto.JWTConfig'
+      last_ip:
+        type: string
+      mode:
+        type: integer
+      provider_access_token:
+        type: string
+      provider_code:
+        type: string
+      provider_name:
+        type: string
+      schema_name:
+        type: string
+      session:
+        $ref: '#/definitions/dto.SessionSetting'
+      social_connections:
+        $ref: '#/definitions/dto.SocialSetting'
+      user_agent:
+        type: string
+      user_general_setting:
+        $ref: '#/definitions/dto.UserSetting'
+      userId:
+        type: integer
+    type: object
+  dto.SecretKeyConf:
+    properties:
+      name:
+        type: string
+      slug:
+        type: string
+      value:
+        type: string
+    type: object
+  dto.SessionConf:
+    properties:
+      claim:
+        type: string
+      interactive_layout:
+        type: integer
+      interactive_layout_unit:
+        type: string
+      is_enable_interactive_layout:
+        type: boolean
+      is_enable_maximum_lifetime:
+        type: boolean
+      maximum_lifetime:
+        type: integer
+      name:
+        type: string
+    type: object
+  dto.SessionSetting:
+    properties:
+      api_key:
+        $ref: '#/definitions/dto.ApiKeyConf'
+      session:
+        $ref: '#/definitions/dto.SessionConf'
+    type: object
+  dto.SettingValue:
+    additionalProperties: true
+    type: object
+  dto.SignupUser:
+    properties:
+      email:
+        maxLength: 255
+        type: string
+      first_name:
+        maxLength: 255
+        type: string
+      last_name:
+        maxLength: 255
+        type: string
+      password:
+        maxLength: 32
+        minLength: 6
+        type: string
+      password_confirm:
+        type: string
+    required:
+    - email
+    - password
+    - password_confirm
+    type: object
+  dto.SocialProvider:
+    properties:
+      auth_provider:
+        type: string
+      is_enable:
+        type: boolean
+      order:
+        type: integer
+      setting:
+        $ref: '#/definitions/dto.SocialProviderSetting'
+    type: object
+  dto.SocialProviderSetting:
+    properties:
+      client_id:
+        type: string
+      client_secret:
+        type: string
+      is_allow:
+        type: boolean
+      is_block_sub_addresses:
+        type: boolean
+      is_use_custom_credential:
+        type: boolean
+      redirect_uri:
+        type: string
+      scopes:
+        items:
+          type: string
+        type: array
+    type: object
+  dto.SocialSetting:
+    additionalProperties:
+      items:
+        $ref: '#/definitions/dto.SocialProvider'
+      type: array
+    type: object
+  dto.TwoFASetting:
+    properties:
+      auth_type:
+        type: string
+    required:
+    - auth_type
+    type: object
+  dto.UpdatePassUser:
+    properties:
+      new_password:
+        maxLength: 128
+        minLength: 6
+        type: string
+      new_password_confirm:
+        type: string
+      old_password:
+        maxLength: 128
+        minLength: 6
+        type: string
+    required:
+    - new_password
+    - old_password
+    type: object
+  dto.UpdateUser:
+    properties:
+      additional_information:
+        additionalProperties: true
+        type: object
+      first_name:
+        type: string
+      last_name:
+        type: string
+    type: object
+  dto.UserInfo:
+    properties:
+      additional_information:
+        additionalProperties: true
+        type: object
+      created_at:
+        type: string
+      email:
+        type: string
+      first_name:
+        type: string
+      groups:
+        items:
+          $ref: '#/definitions/dto.GroupSchamas'
+        type: array
+      id:
+        type: integer
+      last_ip_sign_in:
+        type: string
+      last_login:
+        type: string
+      last_name:
+        type: string
+      number_of_logins:
+        type: integer
+      updated_at:
+        type: string
+      username:
+        type: string
+    type: object
+  dto.UserSetting:
+    properties:
+      authentication_strategies:
+        $ref: '#/definitions/dto.AuthenticationSetting'
+      contact:
+        $ref: '#/definitions/dto.ContactSetting'
+      multi_factors:
+        $ref: '#/definitions/dto.MultiFactorSetting'
+      perrmission:
+        $ref: '#/definitions/dto.PermissionSetting'
+      personal:
+        $ref: '#/definitions/dto.PersonalSetting'
+      username:
+        $ref: '#/definitions/dto.UsernameSetting'
+    type: object
+  dto.UsernameSetting:
+    properties:
+      username:
+        $ref: '#/definitions/dto.BaseSetting'
+    type: object
+  dto.VerificationBase:
+    properties:
+      auth_type:
+        type: string
+      code:
+        type: string
+      email_or_phone:
+        maxLength: 100
+        type: string
+    required:
+    - auth_type
+    - email_or_phone
+    type: object
+  utils.BasicResponse:
+    properties:
+      code:
+        description: HTTP status code.
+        example: 500
+        type: integer
+      data: {}
+      error:
+        description: Error message.
+        example: '{$err}'
+        type: string
+      message:
+        description: Message corresponding to the status code.
+        example: internal_server_error
+        type: string
+    type: object
+  utils.FailedResponse:
+    properties:
+      code:
+        description: HTTP status code.
+        example: 400
+        type: integer
+      error:
+        description: Error message.
+        example: '{$err}'
+        type: string
+      message:
+        description: Message corresponding to the status code.
+        example: bad_request
+        type: string
+    type: object
+  utils.SuccessResponse:
+    properties:
+      code:
+        description: HTTP status code.
+        example: 200
+        type: integer
+      data:
+        description: data payload.
+      message:
+        example: success
+        type: string
+    type: object
+host: localhost:5000
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: This is a sample server Logarin server.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Swagger Logarin API
+  version: "1.0"
+paths:
+  /{session_id}/refresh_tokens/:
+    post:
+      consumes:
+      - application/json
+      description: RefreshToken accounts
+      parameters:
+      - description: session_id
+        in: path
+        name: session_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.BasicResponse'
+      summary: RefreshToken accounts
+      tags:
+      - Accounts
+  /{session_id}/sign_outs/:
+    post:
+      consumes:
+      - application/json
+      description: LogoutAuth accounts
+      parameters:
+      - description: session_id
+        in: path
+        name: session_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.BasicResponse'
+      summary: LogoutAuth accounts
+      tags:
+      - SignOuts
+  /authencator/regenerate_recovery_codes/:
+    post:
+      consumes:
+      - application/json
+      description: ReGenerateRecoveryCode accounts
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.BasicResponse'
+      summary: ReGenerateRecoveryCode accounts
+      tags:
+      - Authencators
+  /authencator/update_secret_key/{email}/:
+    put:
+      consumes:
+      - application/json
+      description: Update2FASecretKey accounts
+      parameters:
+      - description: TwoFASetting
+        in: body
+        name: TwoFASetting
+        required: true
+        schema:
+          $ref: '#/definitions/dto.TwoFASetting'
+      - description: email
+        in: path
+        name: email
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.BasicResponse'
+      summary: Update2FASecretKey accounts
+      tags:
+      - Authencators
+  /authencator/valid_recovery_codes/:
+    post:
+      consumes:
+      - application/json
+      description: ValidateRecoveryCode accounts
+      parameters:
+      - description: RecoveryCodeDto
+        in: body
+        name: RecoveryCodeDto
+        required: true
+        schema:
+          $ref: '#/definitions/dto.RecoveryCodeDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.BasicResponse'
+      summary: ValidateRecoveryCode accounts
+      tags:
+      - Authencators
+  /authencator/validate/:
+    post:
+      consumes:
+      - application/json
+      description: Validate2FA exists user.
+      parameters:
+      - description: GoogleAuthenticator
+        in: body
+        name: GoogleAuthenticator
+        required: true
+        schema:
+          $ref: '#/definitions/dto.GoogleAuthenticator'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.BasicResponse'
+      summary: Validate2FA exists user
+      tags:
+      - Authencators
+  /authorized/:
+    post:
+      consumes:
+      - application/json
+      description: Authorized for user.
+      parameters:
+      - description: AuthorizeReq
+        in: body
+        name: login
+        required: true
+        schema:
+          $ref: '#/definitions/dto.AuthorizeReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.BasicResponse'
+      security:
+      - Bearer: []
+      summary: Authorized for user
+      tags:
+      - CommonAPI
+  /environment/:
+    post:
+      consumes:
+      - application/json
+      description: LoadAllConfig user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.BasicResponse'
+      summary: LoadAllConfig user
+      tags:
+      - Environment
+  /generate/:
+    post:
+      consumes:
+      - application/json
+      description: GenerateCodeByMail accounts
+      parameters:
+      - description: VerificationBase
+        in: body
+        name: VerificationBase
+        required: true
+        schema:
+          $ref: '#/definitions/dto.VerificationBase'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.BasicResponse'
+      summary: GenerateCodeByMail accounts
+      tags:
+      - Authencators
+  /members/change_password/:
+    put:
+      consumes:
+      - application/json
+      description: ChangePassword accounts
+      parameters:
+      - description: UpdatePassUser
+        in: body
+        name: UpdatePassUser
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpdatePassUser'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.BasicResponse'
+      security:
+      - Bearer: []
+      summary: ChangePassword accounts
+      tags:
+      - Members
+  /members/reset_password/:
+    put:
+      consumes:
+      - application/json
+      description: ResetPassword accounts
+      parameters:
+      - description: ResetPassUser
+        in: body
+        name: ResetPassUser
+        required: true
+        schema:
+          $ref: '#/definitions/dto.ResetPassUser'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.BasicResponse'
+      security:
+      - Bearer: []
+      summary: ResetPassword accounts
+      tags:
+      - Members
+  /members/revoke/:
+    put:
+      consumes:
+      - application/json
+      description: RevokeAccount accounts
+      parameters:
+      - description: RefreshAuth
+        in: body
+        name: RefreshAuth
+        required: true
+        schema:
+          $ref: '#/definitions/dto.RefreshAuth'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.BasicResponse'
+      security:
+      - Bearer: []
+      summary: RevokeAccount accounts
+      tags:
+      - Members
+  /members/update_profiles/:
+    put:
+      consumes:
+      - application/json
+      description: UpdateProfile accounts
+      parameters:
+      - description: UpdateUser
+        in: body
+        name: UpdateUser
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpdateUser'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.BasicResponse'
+      security:
+      - Bearer: []
+      summary: UpdateProfile accounts
+      tags:
+      - Members
+  /members/view_profiles/:
+    get:
+      consumes:
+      - application/json
+      description: GetProfile user.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.UserInfo'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+      security:
+      - Bearer: []
+      summary: GetProfile user
+      tags:
+      - Members
+  /permissions/:
+    get:
+      consumes:
+      - application/json
+      description: GetPermissions users
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.BasicResponse'
+      summary: GetPermissions users
+      tags:
+      - CommonAPI
+  /sessions/:
+    get:
+      consumes:
+      - application/json
+      description: GetSession user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.BasicResponse'
+      security:
+      - Bearer: []
+      summary: GetSession user
+      tags:
+      - Sessions
+  /sessions/{session_id}/revoke//:
+    post:
+      consumes:
+      - application/json
+      description: RevokeSession user
+      parameters:
+      - description: session_id
+        in: path
+        name: session_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.BasicResponse'
+      security:
+      - Bearer: []
+      summary: RevokeSession user
+      tags:
+      - Sessions
+  /sessions/{session_id}/user_tokens/{user_id}/:
+    post:
+      consumes:
+      - application/json
+      description: GetTokenWithTemplate member accounts
+      parameters:
+      - description: user_id
+        in: path
+        name: user_id
+        required: true
+        type: integer
+      - description: session_id
+        in: path
+        name: session_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.BasicResponse'
+      security:
+      - Bearer: []
+      summary: GetTokenWithTemplate member accounts
+      tags:
+      - Sessions
+  /sessions/{session_id}/verify/:
+    post:
+      consumes:
+      - application/json
+      description: VerifySession user
+      parameters:
+      - description: session_id
+        in: path
+        name: session_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.BasicResponse'
+      security:
+      - Bearer: []
+      summary: VerifySession user
+      tags:
+      - Sessions
+  /sessions/user_tokens/{user_id}/:
+    post:
+      consumes:
+      - application/json
+      description: GetTokenWithUser member accounts
+      parameters:
+      - description: user_id
+        in: path
+        name: user_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.BasicResponse'
+      summary: GetTokenWithUser member accounts
+      tags:
+      - Sessions
+  /sign_in_tokens/:
+    post:
+      consumes:
+      - application/json
+      description: Login superadmin accounts
+      parameters:
+      - description: UserLogin
+        in: body
+        name: UserLogin
+        required: true
+        schema:
+          $ref: '#/definitions/dto.LoginAuth'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.BasicResponse'
+      summary: Login superadmin accounts
+      tags:
+      - SignInTokens
+  /sign_in_tokens/{sign_in_token_id}/:
+    post:
+      consumes:
+      - application/json
+      description: Revoke token sign_ins
+      parameters:
+      - description: sign_in_token_id
+        in: path
+        name: sign_in_token_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.BasicResponse'
+      summary: Revoke token sign_ins
+      tags:
+      - SignInTokens
+  /sign_in_tokens/social/:
+    post:
+      consumes:
+      - application/json
+      description: a user.
+      parameters:
+      - description: UserSocialLogin
+        in: body
+        name: UserLogin
+        required: true
+        schema:
+          $ref: '#/definitions/dto.ScocialLoginBody'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.BasicResponse'
+      summary: get a user
+      tags:
+      - SignInTokens
+  /signup/:
+    post:
+      consumes:
+      - application/json
+      description: Signup accounts
+      parameters:
+      - description: SignupUser
+        in: body
+        name: SignupUser
+        required: true
+        schema:
+          $ref: '#/definitions/dto.SignupUser'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.BasicResponse'
+      summary: Signup accounts
+      tags:
+      - Accounts
+  /verify/:
+    post:
+      consumes:
+      - application/json
+      description: VerifyCodeByMail accounts
+      parameters:
+      - description: VerificationBase
+        in: body
+        name: VerificationBase
+        required: true
+        schema:
+          $ref: '#/definitions/dto.VerificationBase'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.BasicResponse'
+      summary: VerifyCodeByMail accounts
+      tags:
+      - Authencators
+securityDefinitions:
+  Bearer:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

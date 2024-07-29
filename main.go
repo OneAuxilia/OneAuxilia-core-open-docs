@@ -1,23 +1,28 @@
 package main
 
 import (
+	"fmt"
+	"os"
+
 	"github.com/gofiber/fiber/v2"
+	"github.com/joho/godotenv"
 	"github.com/mvrilo/go-redoc"
 	fiberredoc "github.com/mvrilo/go-redoc/fiber"
 )
 
 func main() {
 	doc := redoc.Redoc{
-		Title:       "Logarin API Document",
-		Description: "Logarin API Description",
-		SpecFile:    "./docs/swagger.json",
-		SpecPath:    "/swagger.json",
+		Title:       "OneAuxilia API Document",
+		Description: "OneAuxilia API Description",
+		SpecFile:    "./docs/oneauxilia.json",
+		SpecPath:    "/oneauxilia.json",
 		DocsPath:    "/docs",
 	}
 
 	r := fiber.New()
 	r.Use(fiberredoc.New(doc))
-
-	println("Documentation served at http://127.0.0.1:8000/docs")
-	panic(r.Listen(":8000"))
+	godotenv.Load()
+	serAdd := fmt.Sprintf("%s:%s", os.Getenv("APP_HOST"), os.Getenv("APP_PORT"))
+	println(fmt.Sprintf("Documentation served at %s/docs", serAdd))
+	panic(r.Listen(serAdd))
 }

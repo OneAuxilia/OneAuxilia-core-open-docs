@@ -1,0 +1,2032 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "This is a documents for OneAuxilia API",
+        "title": "Documents OneAuxilia API",
+        "termsOfService": "http://swagger.io/terms/",
+        "contact": {
+            "name": "API Support",
+            "url": "http://www.swagger.io/support",
+            "email": "support@swagger.io"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0"
+    },
+    "host": "https://core-api-dev.oneauxilia.co",
+    "basePath": "/api/v1/",
+    "paths": {
+        "/authencator/regenerate_recovery_codes/": {
+            "post": {
+                "description": "ReGenerateRecoveryCode accounts",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Authencators"
+                ],
+                "summary": "ReGenerateRecoveryCode accounts",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/utils.SuccessResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.FailedResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/utils.FailedResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/utils.BasicResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/authencator/update_secret_key/{email}/": {
+            "put": {
+                "description": "Update2FASecretKey accounts",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Authencators"
+                ],
+                "summary": "Update2FASecretKey accounts",
+                "parameters": [
+                    {
+                        "description": "TwoFASetting",
+                        "name": "TwoFASetting",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.TwoFASetting"
+                        }
+                    },
+                    {
+                        "type": "string",
+                        "description": "email",
+                        "name": "email",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/utils.SuccessResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.FailedResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/utils.FailedResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/utils.BasicResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/authencator/valid_recovery_codes/": {
+            "post": {
+                "description": "ValidateRecoveryCode accounts",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Authencators"
+                ],
+                "summary": "ValidateRecoveryCode accounts",
+                "parameters": [
+                    {
+                        "description": "RecoveryCodeDto",
+                        "name": "RecoveryCodeDto",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.RecoveryCodeDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/utils.SuccessResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.FailedResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/utils.FailedResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/utils.BasicResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/authencator/validate/": {
+            "post": {
+                "description": "Validate2FA exists user.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Authencators"
+                ],
+                "summary": "Validate2FA exists user",
+                "parameters": [
+                    {
+                        "description": "GoogleAuthenticator",
+                        "name": "GoogleAuthenticator",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.GoogleAuthenticator"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/utils.SuccessResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.FailedResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/utils.FailedResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/utils.BasicResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/authorized/": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Authorized for user.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "CommonAPI"
+                ],
+                "summary": "Authorized for user",
+                "parameters": [
+                    {
+                        "description": "AuthorizeReq",
+                        "name": "login",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.AuthorizeReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/utils.SuccessResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.FailedResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/utils.FailedResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/utils.BasicResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/environment/": {
+            "post": {
+                "description": "LoadAllConfig user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Environment"
+                ],
+                "summary": "LoadAllConfig user",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/utils.SuccessResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.FailedResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/utils.FailedResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/utils.BasicResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/generate/": {
+            "post": {
+                "description": "GenerateCodeByMail accounts",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Authencators"
+                ],
+                "summary": "GenerateCodeByMail accounts",
+                "parameters": [
+                    {
+                        "description": "VerificationBase",
+                        "name": "VerificationBase",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.VerificationBase"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/utils.SuccessResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.FailedResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/utils.FailedResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/utils.BasicResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/members/change_password/": {
+            "put": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "ChangePassword accounts",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Members"
+                ],
+                "summary": "ChangePassword accounts",
+                "parameters": [
+                    {
+                        "description": "UpdatePassUser",
+                        "name": "UpdatePassUser",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.UpdatePassUser"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/utils.SuccessResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.FailedResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/utils.FailedResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/utils.BasicResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/members/reset_password/": {
+            "put": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "ResetPassword accounts",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Members"
+                ],
+                "summary": "ResetPassword accounts",
+                "parameters": [
+                    {
+                        "description": "ResetPassUser",
+                        "name": "ResetPassUser",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.ResetPassUser"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/utils.SuccessResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.FailedResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/utils.FailedResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/utils.BasicResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/members/revoke/": {
+            "put": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "RevokeAccount accounts",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Members"
+                ],
+                "summary": "RevokeAccount accounts",
+                "parameters": [
+                    {
+                        "description": "RefreshAuth",
+                        "name": "RefreshAuth",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.RefreshAuth"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/utils.SuccessResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.FailedResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/utils.FailedResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/utils.BasicResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/members/update_profiles/": {
+            "put": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "UpdateProfile accounts",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Members"
+                ],
+                "summary": "UpdateProfile accounts",
+                "parameters": [
+                    {
+                        "description": "UpdateUser",
+                        "name": "UpdateUser",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.UpdateUser"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/utils.SuccessResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.FailedResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/utils.FailedResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/utils.BasicResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/members/view_profiles/": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "GetProfile user.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Members"
+                ],
+                "summary": "GetProfile user",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.UserInfo"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.FailedResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/permissions/": {
+            "get": {
+                "description": "GetPermissions users",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "CommonAPI"
+                ],
+                "summary": "GetPermissions users",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/utils.SuccessResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.FailedResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/utils.FailedResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/utils.BasicResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/sessions/": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "GetSession user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Sessions"
+                ],
+                "summary": "GetSession user",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/utils.SuccessResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.FailedResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/utils.FailedResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/utils.BasicResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/sessions/user_tokens/{user_id}/": {
+            "post": {
+                "description": "GetTokenWithUser member accounts",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Sessions"
+                ],
+                "summary": "GetTokenWithUser member accounts",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "user_id",
+                        "name": "user_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/utils.SuccessResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.FailedResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/utils.FailedResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/utils.BasicResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/sessions/{session_id}/revoke//": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "RevokeSession user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Sessions"
+                ],
+                "summary": "RevokeSession user",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "session_id",
+                        "name": "session_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/utils.SuccessResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.FailedResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/utils.FailedResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/utils.BasicResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/sessions/{session_id}/user_tokens/{user_id}/": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "GetTokenWithTemplate member accounts",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Sessions"
+                ],
+                "summary": "GetTokenWithTemplate member accounts",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "user_id",
+                        "name": "user_id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "session_id",
+                        "name": "session_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/utils.SuccessResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.FailedResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/utils.FailedResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/utils.BasicResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/sessions/{session_id}/verify/": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "VerifySession user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Sessions"
+                ],
+                "summary": "VerifySession user",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "session_id",
+                        "name": "session_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/utils.SuccessResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.FailedResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/utils.FailedResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/utils.BasicResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/sign_in_tokens/": {
+            "post": {
+                "description": "Login superadmin accounts",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "SignInTokens"
+                ],
+                "summary": "Login superadmin accounts",
+                "parameters": [
+                    {
+                        "description": "UserLogin",
+                        "name": "UserLogin",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.LoginAuth"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/utils.SuccessResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.FailedResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/utils.FailedResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/utils.BasicResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/sign_in_tokens/social/": {
+            "post": {
+                "description": "a user.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "SignInTokens"
+                ],
+                "summary": "get a user",
+                "parameters": [
+                    {
+                        "description": "UserSocialLogin",
+                        "name": "UserLogin",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.ScocialLoginBody"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/utils.SuccessResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.FailedResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/utils.FailedResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/utils.BasicResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/sign_in_tokens/{sign_in_token_id}/": {
+            "post": {
+                "description": "Revoke token sign_ins",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "SignInTokens"
+                ],
+                "summary": "Revoke token sign_ins",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "sign_in_token_id",
+                        "name": "sign_in_token_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/utils.SuccessResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.FailedResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/utils.FailedResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/utils.BasicResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/signup/": {
+            "post": {
+                "description": "Signup accounts",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Accounts"
+                ],
+                "summary": "Signup accounts",
+                "parameters": [
+                    {
+                        "description": "SignupUser",
+                        "name": "SignupUser",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.SignupUser"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/utils.SuccessResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.FailedResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/utils.FailedResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/utils.BasicResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/verify/": {
+            "post": {
+                "description": "VerifyCodeByMail accounts",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Authencators"
+                ],
+                "summary": "VerifyCodeByMail accounts",
+                "parameters": [
+                    {
+                        "description": "VerificationBase",
+                        "name": "VerificationBase",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.VerificationBase"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/utils.SuccessResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.FailedResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/utils.FailedResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/utils.BasicResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/{session_id}/refresh_tokens/": {
+            "post": {
+                "description": "RefreshToken accounts",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Accounts"
+                ],
+                "summary": "RefreshToken accounts",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "session_id",
+                        "name": "session_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/utils.SuccessResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.FailedResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/utils.FailedResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/utils.BasicResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/{session_id}/sign_outs/": {
+            "post": {
+                "description": "LogoutAuth accounts",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "SignOuts"
+                ],
+                "summary": "LogoutAuth accounts",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "session_id",
+                        "name": "session_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/utils.SuccessResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.FailedResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/utils.FailedResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/utils.BasicResponse"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "dto.ApiKeyConf": {
+            "type": "object",
+            "properties": {
+                "jwt_private_key": {
+                    "type": "string"
+                },
+                "jwt_public_key": {
+                    "type": "string"
+                },
+                "public_key": {
+                    "type": "string"
+                },
+                "secret_keys": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dto.SecretKeyConf"
+                    }
+                }
+            }
+        },
+        "dto.AuthenticationSetting": {
+            "type": "object",
+            "properties": {
+                "email_verification_link": {
+                    "$ref": "#/definitions/dto.BaseSetting"
+                },
+                "passkey": {
+                    "$ref": "#/definitions/dto.BaseSetting"
+                },
+                "password": {
+                    "$ref": "#/definitions/dto.BaseSetting"
+                },
+                "sms_verification_code": {
+                    "$ref": "#/definitions/dto.BaseSetting"
+                }
+            }
+        },
+        "dto.AuthorizeReq": {
+            "type": "object",
+            "properties": {
+                "codename": {
+                    "description": "Codename string `json:\"codename\" validate:\"required\"`",
+                    "type": "string"
+                },
+                "groups": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "user_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "dto.BaseSetting": {
+            "type": "object",
+            "properties": {
+                "is_enable": {
+                    "type": "boolean"
+                },
+                "setting": {
+                    "$ref": "#/definitions/dto.SettingValue"
+                }
+            }
+        },
+        "dto.ContactSetting": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "$ref": "#/definitions/dto.BaseSetting"
+                },
+                "phone_number": {
+                    "$ref": "#/definitions/dto.BaseSetting"
+                }
+            }
+        },
+        "dto.GoogleAuthenticator": {
+            "type": "object",
+            "properties": {
+                "auth_type": {
+                    "type": "string"
+                },
+                "code": {
+                    "type": "string"
+                },
+                "secret": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "dto.GroupSchamas": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.JWTConfig": {
+            "type": "object",
+            "properties": {
+                "access_token_lifetime": {
+                    "type": "integer"
+                },
+                "auth_header_name": {
+                    "type": "string"
+                },
+                "auth_header_type": {
+                    "type": "string"
+                },
+                "claim": {
+                    "type": "string"
+                },
+                "is_rotate_refresh_token": {
+                    "type": "boolean"
+                },
+                "issuer": {
+                    "type": "string"
+                },
+                "refresh_token_lifetime": {
+                    "type": "integer"
+                },
+                "signing_algorithm": {
+                    "type": "string"
+                },
+                "signing_key": {
+                    "type": "string"
+                },
+                "signing_key_pub": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.LoginAuth": {
+            "type": "object",
+            "properties": {
+                "application_id": {
+                    "type": "string"
+                },
+                "code": {
+                    "type": "string"
+                },
+                "domain": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "instance_id": {
+                    "type": "string"
+                },
+                "is_deleted": {
+                    "type": "boolean"
+                },
+                "jwt_config": {
+                    "$ref": "#/definitions/dto.JWTConfig"
+                },
+                "last_ip": {
+                    "type": "string"
+                },
+                "mode": {
+                    "type": "integer"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "schema_name": {
+                    "type": "string"
+                },
+                "session": {
+                    "$ref": "#/definitions/dto.SessionSetting"
+                },
+                "social_connections": {
+                    "$ref": "#/definitions/dto.SocialSetting"
+                },
+                "userId": {
+                    "type": "integer"
+                },
+                "user_agent": {
+                    "type": "string"
+                },
+                "user_general_setting": {
+                    "$ref": "#/definitions/dto.UserSetting"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.MultiFactorProvider": {
+            "type": "object",
+            "properties": {
+                "is_enable": {
+                    "type": "boolean"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "order": {
+                    "type": "integer"
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.MultiFactorSetting": {
+            "type": "object",
+            "properties": {
+                "methods": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dto.MultiFactorProvider"
+                    }
+                }
+            }
+        },
+        "dto.PermissionSetting": {
+            "type": "object"
+        },
+        "dto.PersonalSetting": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "$ref": "#/definitions/dto.BaseSetting"
+                }
+            }
+        },
+        "dto.RecoveryCodeDto": {
+            "type": "object",
+            "properties": {
+                "application_id": {
+                    "type": "string"
+                },
+                "auth_type": {
+                    "type": "string"
+                },
+                "code": {
+                    "type": "string"
+                },
+                "domain": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "instance_id": {
+                    "type": "string"
+                },
+                "is_deleted": {
+                    "type": "boolean"
+                },
+                "jwt_config": {
+                    "$ref": "#/definitions/dto.JWTConfig"
+                },
+                "last_ip": {
+                    "type": "string"
+                },
+                "mode": {
+                    "type": "integer"
+                },
+                "schema_name": {
+                    "type": "string"
+                },
+                "session": {
+                    "$ref": "#/definitions/dto.SessionSetting"
+                },
+                "social_connections": {
+                    "$ref": "#/definitions/dto.SocialSetting"
+                },
+                "userId": {
+                    "type": "integer"
+                },
+                "user_agent": {
+                    "type": "string"
+                },
+                "user_general_setting": {
+                    "$ref": "#/definitions/dto.UserSetting"
+                }
+            }
+        },
+        "dto.RefreshAuth": {
+            "type": "object",
+            "properties": {
+                "refresh_token": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.ResetPassUser": {
+            "type": "object",
+            "required": [
+                "new_password"
+            ],
+            "properties": {
+                "new_password": {
+                    "type": "string",
+                    "maxLength": 128,
+                    "minLength": 6
+                },
+                "new_password_confirm": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.ScocialLoginBody": {
+            "type": "object",
+            "properties": {
+                "application_id": {
+                    "type": "string"
+                },
+                "client_id": {
+                    "type": "string"
+                },
+                "code": {
+                    "type": "string"
+                },
+                "domain": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "instance_id": {
+                    "type": "string"
+                },
+                "is_deleted": {
+                    "type": "boolean"
+                },
+                "jwt_config": {
+                    "$ref": "#/definitions/dto.JWTConfig"
+                },
+                "last_ip": {
+                    "type": "string"
+                },
+                "mode": {
+                    "type": "integer"
+                },
+                "provider_access_token": {
+                    "type": "string"
+                },
+                "provider_code": {
+                    "type": "string"
+                },
+                "provider_name": {
+                    "type": "string"
+                },
+                "schema_name": {
+                    "type": "string"
+                },
+                "session": {
+                    "$ref": "#/definitions/dto.SessionSetting"
+                },
+                "social_connections": {
+                    "$ref": "#/definitions/dto.SocialSetting"
+                },
+                "userId": {
+                    "type": "integer"
+                },
+                "user_agent": {
+                    "type": "string"
+                },
+                "user_general_setting": {
+                    "$ref": "#/definitions/dto.UserSetting"
+                }
+            }
+        },
+        "dto.SecretKeyConf": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "slug": {
+                    "type": "string"
+                },
+                "value": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.SessionConf": {
+            "type": "object",
+            "properties": {
+                "claim": {
+                    "type": "string"
+                },
+                "interactive_layout": {
+                    "type": "integer"
+                },
+                "interactive_layout_unit": {
+                    "type": "string"
+                },
+                "is_enable_interactive_layout": {
+                    "type": "boolean"
+                },
+                "is_enable_maximum_lifetime": {
+                    "type": "boolean"
+                },
+                "maximum_lifetime": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.SessionSetting": {
+            "type": "object",
+            "properties": {
+                "api_key": {
+                    "$ref": "#/definitions/dto.ApiKeyConf"
+                },
+                "session": {
+                    "$ref": "#/definitions/dto.SessionConf"
+                }
+            }
+        },
+        "dto.SettingValue": {
+            "type": "object",
+            "additionalProperties": true
+        },
+        "dto.SignupUser": {
+            "type": "object",
+            "required": [
+                "email",
+                "password",
+                "password_confirm"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "maxLength": 255
+                },
+                "first_name": {
+                    "type": "string",
+                    "maxLength": 255
+                },
+                "last_name": {
+                    "type": "string",
+                    "maxLength": 255
+                },
+                "password": {
+                    "type": "string",
+                    "maxLength": 32,
+                    "minLength": 6
+                },
+                "password_confirm": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.SocialProvider": {
+            "type": "object",
+            "properties": {
+                "auth_provider": {
+                    "type": "string"
+                },
+                "is_enable": {
+                    "type": "boolean"
+                },
+                "order": {
+                    "type": "integer"
+                },
+                "setting": {
+                    "$ref": "#/definitions/dto.SocialProviderSetting"
+                }
+            }
+        },
+        "dto.SocialProviderSetting": {
+            "type": "object",
+            "properties": {
+                "client_id": {
+                    "type": "string"
+                },
+                "client_secret": {
+                    "type": "string"
+                },
+                "is_allow": {
+                    "type": "boolean"
+                },
+                "is_block_sub_addresses": {
+                    "type": "boolean"
+                },
+                "is_use_custom_credential": {
+                    "type": "boolean"
+                },
+                "redirect_uri": {
+                    "type": "string"
+                },
+                "scopes": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "dto.SocialSetting": {
+            "type": "object",
+            "additionalProperties": {
+                "type": "array",
+                "items": {
+                    "$ref": "#/definitions/dto.SocialProvider"
+                }
+            }
+        },
+        "dto.TwoFASetting": {
+            "type": "object",
+            "required": [
+                "auth_type"
+            ],
+            "properties": {
+                "auth_type": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.UpdatePassUser": {
+            "type": "object",
+            "required": [
+                "new_password",
+                "old_password"
+            ],
+            "properties": {
+                "new_password": {
+                    "type": "string",
+                    "maxLength": 128,
+                    "minLength": 6
+                },
+                "new_password_confirm": {
+                    "type": "string"
+                },
+                "old_password": {
+                    "type": "string",
+                    "maxLength": 128,
+                    "minLength": 6
+                }
+            }
+        },
+        "dto.UpdateUser": {
+            "type": "object",
+            "properties": {
+                "additional_information": {
+                    "type": "object",
+                    "additionalProperties": true
+                },
+                "first_name": {
+                    "type": "string"
+                },
+                "last_name": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.UserInfo": {
+            "type": "object",
+            "properties": {
+                "additional_information": {
+                    "type": "object",
+                    "additionalProperties": true
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "first_name": {
+                    "type": "string"
+                },
+                "groups": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dto.GroupSchamas"
+                    }
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "last_ip_sign_in": {
+                    "type": "string"
+                },
+                "last_login": {
+                    "type": "string"
+                },
+                "last_name": {
+                    "type": "string"
+                },
+                "number_of_logins": {
+                    "type": "integer"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.UserSetting": {
+            "type": "object",
+            "properties": {
+                "authentication_strategies": {
+                    "$ref": "#/definitions/dto.AuthenticationSetting"
+                },
+                "contact": {
+                    "$ref": "#/definitions/dto.ContactSetting"
+                },
+                "multi_factors": {
+                    "$ref": "#/definitions/dto.MultiFactorSetting"
+                },
+                "perrmission": {
+                    "$ref": "#/definitions/dto.PermissionSetting"
+                },
+                "personal": {
+                    "$ref": "#/definitions/dto.PersonalSetting"
+                },
+                "username": {
+                    "$ref": "#/definitions/dto.UsernameSetting"
+                }
+            }
+        },
+        "dto.UsernameSetting": {
+            "type": "object",
+            "properties": {
+                "username": {
+                    "$ref": "#/definitions/dto.BaseSetting"
+                }
+            }
+        },
+        "dto.VerificationBase": {
+            "type": "object",
+            "required": [
+                "auth_type",
+                "email_or_phone"
+            ],
+            "properties": {
+                "auth_type": {
+                    "type": "string"
+                },
+                "code": {
+                    "type": "string"
+                },
+                "email_or_phone": {
+                    "type": "string",
+                    "maxLength": 100
+                }
+            }
+        },
+        "utils.BasicResponse": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "description": "HTTP status code.",
+                    "type": "integer",
+                    "example": 500
+                },
+                "data": {},
+                "error": {
+                    "description": "Error message.",
+                    "type": "string",
+                    "example": "{$err}"
+                },
+                "message": {
+                    "description": "Message corresponding to the status code.",
+                    "type": "string",
+                    "example": "internal_server_error"
+                }
+            }
+        },
+        "utils.FailedResponse": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "description": "HTTP status code.",
+                    "type": "integer",
+                    "example": 400
+                },
+                "error": {
+                    "description": "Error message.",
+                    "type": "string",
+                    "example": "{$err}"
+                },
+                "message": {
+                    "description": "Message corresponding to the status code.",
+                    "type": "string",
+                    "example": "bad_request"
+                }
+            }
+        },
+        "utils.SuccessResponse": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "description": "HTTP status code.",
+                    "type": "integer",
+                    "example": 200
+                },
+                "data": {
+                    "description": "data payload."
+                },
+                "message": {
+                    "type": "string",
+                    "example": "success"
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "Bearer": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
+    }
+}
