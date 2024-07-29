@@ -1,7 +1,7 @@
 {
     "swagger": "2.0",
     "info": {
-        "description": "This is a documents for OneAuxilia API",
+        "description": "This is a documents for OneAuxilia API.",
         "title": "Documents OneAuxilia API",
         "termsOfService": "http://swagger.io/terms/",
         "contact": {
@@ -15,12 +15,12 @@
         },
         "version": "1.0"
     },
-    "host": "https://core-api-dev.oneauxilia.co",
+    "host": "127.0.0.1:5000",
     "basePath": "/api/v1/",
     "paths": {
         "/authencator/regenerate_recovery_codes/": {
             "post": {
-                "description": "ReGenerateRecoveryCode accounts",
+                "description": "Generates a new recovery code for account recovery or authentication purposes.",
                 "consumes": [
                     "application/json"
                 ],
@@ -28,89 +28,30 @@
                     "application/json"
                 ],
                 "tags": [
-                    "Authencators"
+                    "Authenticators"
                 ],
-                "summary": "ReGenerateRecoveryCode accounts",
+                "summary": "Regenerate Recovery Code",
                 "responses": {
                     "200": {
-                        "description": "OK",
+                        "description": "New recovery code successfully generated",
                         "schema": {
                             "$ref": "#/definitions/utils.SuccessResponse"
                         }
                     },
                     "400": {
-                        "description": "Bad Request",
+                        "description": "Invalid request or error generating new recovery code",
                         "schema": {
                             "$ref": "#/definitions/utils.FailedResponse"
                         }
                     },
                     "404": {
-                        "description": "Not Found",
+                        "description": "User not found or account issue",
                         "schema": {
                             "$ref": "#/definitions/utils.FailedResponse"
                         }
                     },
                     "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/utils.BasicResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/authencator/update_secret_key/{email}/": {
-            "put": {
-                "description": "Update2FASecretKey accounts",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Authencators"
-                ],
-                "summary": "Update2FASecretKey accounts",
-                "parameters": [
-                    {
-                        "description": "TwoFASetting",
-                        "name": "TwoFASetting",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/dto.TwoFASetting"
-                        }
-                    },
-                    {
-                        "type": "string",
-                        "description": "email",
-                        "name": "email",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/utils.SuccessResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/utils.FailedResponse"
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "$ref": "#/definitions/utils.FailedResponse"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
+                        "description": "Internal server error",
                         "schema": {
                             "$ref": "#/definitions/utils.BasicResponse"
                         }
@@ -120,7 +61,7 @@
         },
         "/authencator/valid_recovery_codes/": {
             "post": {
-                "description": "ValidateRecoveryCode accounts",
+                "description": "Validates a recovery code used for user authentication or account recovery.",
                 "consumes": [
                     "application/json"
                 ],
@@ -128,9 +69,9 @@
                     "application/json"
                 ],
                 "tags": [
-                    "Authencators"
+                    "Authenticators"
                 ],
-                "summary": "ValidateRecoveryCode accounts",
+                "summary": "Validate Recovery Code",
                 "parameters": [
                     {
                         "description": "RecoveryCodeDto",
@@ -144,25 +85,25 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "OK",
+                        "description": "Successful validation of the recovery code",
                         "schema": {
                             "$ref": "#/definitions/utils.SuccessResponse"
                         }
                     },
                     "400": {
-                        "description": "Bad Request",
+                        "description": "Invalid request or recovery code",
                         "schema": {
                             "$ref": "#/definitions/utils.FailedResponse"
                         }
                     },
                     "404": {
-                        "description": "Not Found",
+                        "description": "Recovery code not found or user not found",
                         "schema": {
                             "$ref": "#/definitions/utils.FailedResponse"
                         }
                     },
                     "500": {
-                        "description": "Internal Server Error",
+                        "description": "Internal server error",
                         "schema": {
                             "$ref": "#/definitions/utils.BasicResponse"
                         }
@@ -170,9 +111,9 @@
                 }
             }
         },
-        "/authencator/validate/": {
-            "post": {
-                "description": "Validate2FA exists user.",
+        "/authenticator/update_secret_key/{email}/": {
+            "put": {
+                "description": "Updates the two-factor authentication (2FA) secret key associated with the provided email address.",
                 "consumes": [
                     "application/json"
                 ],
@@ -180,12 +121,71 @@
                     "application/json"
                 ],
                 "tags": [
-                    "Authencators"
+                    "Authenticators"
                 ],
-                "summary": "Validate2FA exists user",
+                "summary": "Update seconds factor Secret Key",
                 "parameters": [
                     {
-                        "description": "GoogleAuthenticator",
+                        "type": "string",
+                        "description": "User Email Address",
+                        "name": "email",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "TwoFASetting Request Body",
+                        "name": "TwoFASetting",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.TwoFASetting"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response indicating the 2FA secret key was updated",
+                        "schema": {
+                            "$ref": "#/definitions/utils.SuccessResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request due to invalid input or other issues",
+                        "schema": {
+                            "$ref": "#/definitions/utils.FailedResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not found if the email is not found",
+                        "schema": {
+                            "$ref": "#/definitions/utils.FailedResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/utils.BasicResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/authenticator/validate/": {
+            "post": {
+                "description": "Validates the provided two-factor authentication (2FA) credentials for an existing user.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Authenticators"
+                ],
+                "summary": "Validate seconds factor Credentials",
+                "parameters": [
+                    {
+                        "description": "GoogleAuthenticator Request Body",
                         "name": "GoogleAuthenticator",
                         "in": "body",
                         "required": true,
@@ -196,25 +196,77 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "OK",
+                        "description": "Successful response indicating 2FA validation",
                         "schema": {
                             "$ref": "#/definitions/utils.SuccessResponse"
                         }
                     },
                     "400": {
-                        "description": "Bad Request",
+                        "description": "Bad request due to invalid input or other issues",
                         "schema": {
                             "$ref": "#/definitions/utils.FailedResponse"
                         }
                     },
                     "404": {
-                        "description": "Not Found",
+                        "description": "Not found if the user or 2FA setup is not found",
                         "schema": {
                             "$ref": "#/definitions/utils.FailedResponse"
                         }
                     },
                     "500": {
-                        "description": "Internal Server Error",
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/utils.BasicResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/authenticator/validate/sign_ins/": {
+            "post": {
+                "description": "Validates the provided two-factor authentication (2FA) credentials for an existing user.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Authenticators"
+                ],
+                "summary": "Validate Two-Factor Authentication Credentials",
+                "parameters": [
+                    {
+                        "description": "GoogleAuthenticator Request Body",
+                        "name": "GoogleAuthenticator",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.GoogleAuthenticator"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response indicating 2FA validation",
+                        "schema": {
+                            "$ref": "#/definitions/dto.UserInfoFoward"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request due to invalid input or other issues",
+                        "schema": {
+                            "$ref": "#/definitions/utils.FailedResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not found if the user or 2FA setup is not found",
+                        "schema": {
+                            "$ref": "#/definitions/utils.FailedResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
                         "schema": {
                             "$ref": "#/definitions/utils.BasicResponse"
                         }
@@ -229,7 +281,7 @@
                         "Bearer": []
                     }
                 ],
-                "description": "Authorized for user.",
+                "description": "Handles user authorization by validating the provided credentials or tokens.",
                 "consumes": [
                     "application/json"
                 ],
@@ -237,13 +289,13 @@
                     "application/json"
                 ],
                 "tags": [
-                    "CommonAPI"
+                    "Authorize"
                 ],
-                "summary": "Authorized for user",
+                "summary": "Authorize User",
                 "parameters": [
                     {
-                        "description": "AuthorizeReq",
-                        "name": "login",
+                        "description": "Authorize Request Body",
+                        "name": "Authorize",
                         "in": "body",
                         "required": true,
                         "schema": {
@@ -253,25 +305,25 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "OK",
+                        "description": "Successful authorization response",
                         "schema": {
                             "$ref": "#/definitions/utils.SuccessResponse"
                         }
                     },
                     "400": {
-                        "description": "Bad Request",
+                        "description": "Bad request due to invalid input or other issues",
                         "schema": {
                             "$ref": "#/definitions/utils.FailedResponse"
                         }
                     },
                     "404": {
-                        "description": "Not Found",
+                        "description": "Not found if the user or resource is not found",
                         "schema": {
                             "$ref": "#/definitions/utils.FailedResponse"
                         }
                     },
                     "500": {
-                        "description": "Internal Server Error",
+                        "description": "Internal server error",
                         "schema": {
                             "$ref": "#/definitions/utils.BasicResponse"
                         }
@@ -322,7 +374,7 @@
         },
         "/generate/": {
             "post": {
-                "description": "GenerateCodeByMail accounts",
+                "description": "Generates and sends a verification code to the user's email address based on the provided details.",
                 "consumes": [
                     "application/json"
                 ],
@@ -330,12 +382,12 @@
                     "application/json"
                 ],
                 "tags": [
-                    "Authencators"
+                    "Authenticators"
                 ],
-                "summary": "GenerateCodeByMail accounts",
+                "summary": "Generate Code By Mail",
                 "parameters": [
                     {
-                        "description": "VerificationBase",
+                        "description": "VerificationBase Request Body",
                         "name": "VerificationBase",
                         "in": "body",
                         "required": true,
@@ -346,25 +398,25 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "OK",
+                        "description": "Successful response indicating the code was sent",
                         "schema": {
                             "$ref": "#/definitions/utils.SuccessResponse"
                         }
                     },
                     "400": {
-                        "description": "Bad Request",
+                        "description": "Bad request due to invalid input or other issues",
                         "schema": {
                             "$ref": "#/definitions/utils.FailedResponse"
                         }
                     },
                     "404": {
-                        "description": "Not Found",
+                        "description": "Not found if the email or resource is not found",
                         "schema": {
                             "$ref": "#/definitions/utils.FailedResponse"
                         }
                     },
                     "500": {
-                        "description": "Internal Server Error",
+                        "description": "Internal server error",
                         "schema": {
                             "$ref": "#/definitions/utils.BasicResponse"
                         }
@@ -377,9 +429,12 @@
                 "security": [
                     {
                         "Bearer": []
+                    },
+                    {
+                        "TenantHeader": []
                     }
                 ],
-                "description": "ChangePassword accounts",
+                "description": "This endpoint allows users to change their password. It requires Bearer authentication and a `Tenant-Header` for authorization.",
                 "consumes": [
                     "application/json"
                 ],
@@ -389,10 +444,10 @@
                 "tags": [
                     "Members"
                 ],
-                "summary": "ChangePassword accounts",
+                "summary": "Change user password",
                 "parameters": [
                     {
-                        "description": "UpdatePassUser",
+                        "description": "User password update details",
                         "name": "UpdatePassUser",
                         "in": "body",
                         "required": true,
@@ -403,25 +458,25 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "OK",
+                        "description": "Successful password change response",
                         "schema": {
                             "$ref": "#/definitions/utils.SuccessResponse"
                         }
                     },
                     "400": {
-                        "description": "Bad Request",
+                        "description": "Bad request due to validation errors or other issues",
                         "schema": {
                             "$ref": "#/definitions/utils.FailedResponse"
                         }
                     },
                     "404": {
-                        "description": "Not Found",
+                        "description": "Not found, such as if the user does not exist",
                         "schema": {
                             "$ref": "#/definitions/utils.FailedResponse"
                         }
                     },
                     "500": {
-                        "description": "Internal Server Error",
+                        "description": "Internal server error",
                         "schema": {
                             "$ref": "#/definitions/utils.BasicResponse"
                         }
@@ -434,9 +489,12 @@
                 "security": [
                     {
                         "Bearer": []
+                    },
+                    {
+                        "TenantHeader": []
                     }
                 ],
-                "description": "ResetPassword accounts",
+                "description": "This endpoint allows users to reset their password. It requires Bearer authentication and a `Tenant-Header` for authorization.",
                 "consumes": [
                     "application/json"
                 ],
@@ -446,10 +504,10 @@
                 "tags": [
                     "Members"
                 ],
-                "summary": "ResetPassword accounts",
+                "summary": "Reset user password",
                 "parameters": [
                     {
-                        "description": "ResetPassUser",
+                        "description": "User password reset details",
                         "name": "ResetPassUser",
                         "in": "body",
                         "required": true,
@@ -460,25 +518,25 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "OK",
+                        "description": "Successful password reset response",
                         "schema": {
                             "$ref": "#/definitions/utils.SuccessResponse"
                         }
                     },
                     "400": {
-                        "description": "Bad Request",
+                        "description": "Bad request due to validation errors or other issues",
                         "schema": {
                             "$ref": "#/definitions/utils.FailedResponse"
                         }
                     },
                     "404": {
-                        "description": "Not Found",
+                        "description": "Not found, such as if the user does not exist",
                         "schema": {
                             "$ref": "#/definitions/utils.FailedResponse"
                         }
                     },
                     "500": {
-                        "description": "Internal Server Error",
+                        "description": "Internal server error",
                         "schema": {
                             "$ref": "#/definitions/utils.BasicResponse"
                         }
@@ -491,9 +549,12 @@
                 "security": [
                     {
                         "Bearer": []
+                    },
+                    {
+                        "TenantHeader": []
                     }
                 ],
-                "description": "RevokeAccount accounts",
+                "description": "This endpoint revokes a user account. It requires both Bearer authentication and a `Tenant-Header` for authorization.",
                 "consumes": [
                     "application/json"
                 ],
@@ -503,39 +564,28 @@
                 "tags": [
                     "Members"
                 ],
-                "summary": "RevokeAccount accounts",
-                "parameters": [
-                    {
-                        "description": "RefreshAuth",
-                        "name": "RefreshAuth",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/dto.RefreshAuth"
-                        }
-                    }
-                ],
+                "summary": "Revoke a user account",
                 "responses": {
                     "200": {
-                        "description": "OK",
+                        "description": "Successful account revocation response",
                         "schema": {
                             "$ref": "#/definitions/utils.SuccessResponse"
                         }
                     },
                     "400": {
-                        "description": "Bad Request",
+                        "description": "Bad request due to validation errors or other issues",
                         "schema": {
                             "$ref": "#/definitions/utils.FailedResponse"
                         }
                     },
                     "404": {
-                        "description": "Not Found",
+                        "description": "Not found, such as if the account does not exist",
                         "schema": {
                             "$ref": "#/definitions/utils.FailedResponse"
                         }
                     },
                     "500": {
-                        "description": "Internal Server Error",
+                        "description": "Internal server error",
                         "schema": {
                             "$ref": "#/definitions/utils.BasicResponse"
                         }
@@ -548,9 +598,12 @@
                 "security": [
                     {
                         "Bearer": []
+                    },
+                    {
+                        "TenantHeader": []
                     }
                 ],
-                "description": "UpdateProfile accounts",
+                "description": "This endpoint allows users to update their profile information. It requires Bearer authentication and a `Tenant-Header` for authorization.",
                 "consumes": [
                     "application/json"
                 ],
@@ -560,10 +613,10 @@
                 "tags": [
                     "Members"
                 ],
-                "summary": "UpdateProfile accounts",
+                "summary": "Update user profile",
                 "parameters": [
                     {
-                        "description": "UpdateUser",
+                        "description": "User profile update details",
                         "name": "UpdateUser",
                         "in": "body",
                         "required": true,
@@ -574,25 +627,25 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "OK",
+                        "description": "Successful profile update response",
                         "schema": {
                             "$ref": "#/definitions/utils.SuccessResponse"
                         }
                     },
                     "400": {
-                        "description": "Bad Request",
+                        "description": "Bad request due to validation errors or other issues",
                         "schema": {
                             "$ref": "#/definitions/utils.FailedResponse"
                         }
                     },
                     "404": {
-                        "description": "Not Found",
+                        "description": "Not found, such as if the user does not exist",
                         "schema": {
                             "$ref": "#/definitions/utils.FailedResponse"
                         }
                     },
                     "500": {
-                        "description": "Internal Server Error",
+                        "description": "Internal server error",
                         "schema": {
                             "$ref": "#/definitions/utils.BasicResponse"
                         }
@@ -605,9 +658,12 @@
                 "security": [
                     {
                         "Bearer": []
+                    },
+                    {
+                        "TenantHeader": []
                     }
                 ],
-                "description": "GetProfile user.",
+                "description": "This endpoint retrieves the profile information of the currently authenticated user. It requires Bearer authentication and a `Tenant-Header` for authorization.",
                 "consumes": [
                     "application/json"
                 ],
@@ -617,18 +673,30 @@
                 "tags": [
                     "Members"
                 ],
-                "summary": "GetProfile user",
+                "summary": "Get user profile",
                 "responses": {
                     "200": {
-                        "description": "OK",
+                        "description": "User profile information",
                         "schema": {
                             "$ref": "#/definitions/dto.UserInfo"
                         }
                     },
                     "400": {
-                        "description": "Bad Request",
+                        "description": "Bad request due to validation errors or other issues",
                         "schema": {
                             "$ref": "#/definitions/utils.FailedResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not found, such as if the user does not exist",
+                        "schema": {
+                            "$ref": "#/definitions/utils.FailedResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/utils.BasicResponse"
                         }
                     }
                 }
@@ -636,7 +704,7 @@
         },
         "/permissions/": {
             "get": {
-                "description": "GetPermissions users",
+                "description": "Retrieves a list of available permissions for users in the system.",
                 "consumes": [
                     "application/json"
                 ],
@@ -644,30 +712,30 @@
                     "application/json"
                 ],
                 "tags": [
-                    "CommonAPI"
+                    "Roles"
                 ],
-                "summary": "GetPermissions users",
+                "summary": "Get Permissions for Users",
                 "responses": {
                     "200": {
-                        "description": "OK",
+                        "description": "Successful response containing permissions list",
                         "schema": {
                             "$ref": "#/definitions/utils.SuccessResponse"
                         }
                     },
                     "400": {
-                        "description": "Bad Request",
+                        "description": "Bad request due to invalid input or other issues",
                         "schema": {
                             "$ref": "#/definitions/utils.FailedResponse"
                         }
                     },
                     "404": {
-                        "description": "Not Found",
+                        "description": "Not found, if no permissions are available",
                         "schema": {
                             "$ref": "#/definitions/utils.FailedResponse"
                         }
                     },
                     "500": {
-                        "description": "Internal Server Error",
+                        "description": "Internal server error",
                         "schema": {
                             "$ref": "#/definitions/utils.BasicResponse"
                         }
@@ -723,7 +791,12 @@
         },
         "/sessions/user_tokens/{user_id}/": {
             "post": {
-                "description": "GetTokenWithUser member accounts",
+                "security": [
+                    {
+                        "TenantHeader": []
+                    }
+                ],
+                "description": "This endpoint retrieves a session token for a specific user using their user ID. Requires “Tenant-Header“ for authorization.",
                 "consumes": [
                     "application/json"
                 ],
@@ -733,11 +806,11 @@
                 "tags": [
                     "Sessions"
                 ],
-                "summary": "GetTokenWithUser member accounts",
+                "summary": "Retrieve token for user",
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "user_id",
+                        "description": "User ID for which to retrieve the token",
                         "name": "user_id",
                         "in": "path",
                         "required": true
@@ -745,25 +818,25 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "OK",
+                        "description": "Successful token retrieval response",
                         "schema": {
-                            "$ref": "#/definitions/utils.SuccessResponse"
+                            "$ref": "#/definitions/dto.UserInfoFoward"
                         }
                     },
                     "400": {
-                        "description": "Bad Request",
+                        "description": "Bad request due to validation errors or other issues",
                         "schema": {
                             "$ref": "#/definitions/utils.FailedResponse"
                         }
                     },
                     "404": {
-                        "description": "Not Found",
+                        "description": "Not found, such as if the user does not exist",
                         "schema": {
                             "$ref": "#/definitions/utils.FailedResponse"
                         }
                     },
                     "500": {
-                        "description": "Internal Server Error",
+                        "description": "Internal server error",
                         "schema": {
                             "$ref": "#/definitions/utils.BasicResponse"
                         }
@@ -831,9 +904,15 @@
                 "security": [
                     {
                         "Bearer": []
+                    },
+                    {
+                        "TenantHeader": []
+                    },
+                    {
+                        "TemplateSlug": []
                     }
                 ],
-                "description": "GetTokenWithTemplate member accounts",
+                "description": "This endpoint retrieves a session token for a specific user using their user ID and session ID, with additional template slug validation. Requires Bearer token, “Tenant-Header“, and TemplateSlug for authorization.",
                 "consumes": [
                     "application/json"
                 ],
@@ -843,18 +922,18 @@
                 "tags": [
                     "Sessions"
                 ],
-                "summary": "GetTokenWithTemplate member accounts",
+                "summary": "Retrieve token with template",
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "user_id",
+                        "description": "User ID for which to retrieve the token",
                         "name": "user_id",
                         "in": "path",
                         "required": true
                     },
                     {
                         "type": "integer",
-                        "description": "session_id",
+                        "description": "Session ID associated with the token retrieval",
                         "name": "session_id",
                         "in": "path",
                         "required": true
@@ -862,25 +941,26 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "OK",
+                        "description": "Successful token retrieval response",
                         "schema": {
-                            "$ref": "#/definitions/utils.SuccessResponse"
+                            "type": "object",
+                            "additionalProperties": true
                         }
                     },
                     "400": {
-                        "description": "Bad Request",
+                        "description": "Bad request due to validation errors or other issues",
                         "schema": {
                             "$ref": "#/definitions/utils.FailedResponse"
                         }
                     },
                     "404": {
-                        "description": "Not Found",
+                        "description": "Not found, such as if the user or session does not exist",
                         "schema": {
                             "$ref": "#/definitions/utils.FailedResponse"
                         }
                     },
                     "500": {
-                        "description": "Internal Server Error",
+                        "description": "Internal server error",
                         "schema": {
                             "$ref": "#/definitions/utils.BasicResponse"
                         }
@@ -945,7 +1025,12 @@
         },
         "/sign_in_tokens/": {
             "post": {
-                "description": "Login superadmin accounts",
+                "security": [
+                    {
+                        "TenantHeader": []
+                    }
+                ],
+                "description": "This endpoint allows superadmin users to log in by providing their credentials. It requires the `Tenant-Header` for authorization.",
                 "consumes": [
                     "application/json"
                 ],
@@ -955,10 +1040,10 @@
                 "tags": [
                     "SignInTokens"
                 ],
-                "summary": "Login superadmin accounts",
+                "summary": "Signin for accounts",
                 "parameters": [
                     {
-                        "description": "UserLogin",
+                        "description": "Login credentials for superadmin",
                         "name": "UserLogin",
                         "in": "body",
                         "required": true,
@@ -969,25 +1054,25 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "OK",
+                        "description": "Successful login response containing user info and token",
                         "schema": {
-                            "$ref": "#/definitions/utils.SuccessResponse"
+                            "$ref": "#/definitions/dto.UserInfoFoward"
                         }
                     },
                     "400": {
-                        "description": "Bad Request",
+                        "description": "Invalid request or login credentials",
                         "schema": {
                             "$ref": "#/definitions/utils.FailedResponse"
                         }
                     },
                     "404": {
-                        "description": "Not Found",
+                        "description": "User not found",
                         "schema": {
                             "$ref": "#/definitions/utils.FailedResponse"
                         }
                     },
                     "500": {
-                        "description": "Internal Server Error",
+                        "description": "Internal server error",
                         "schema": {
                             "$ref": "#/definitions/utils.BasicResponse"
                         }
@@ -997,7 +1082,12 @@
         },
         "/sign_in_tokens/social/": {
             "post": {
-                "description": "a user.",
+                "security": [
+                    {
+                        "TenantHeader": []
+                    }
+                ],
+                "description": "This endpoint allows users to log in using their social credentials (e.g., Google, Facebook).",
                 "consumes": [
                     "application/json"
                 ],
@@ -1007,39 +1097,39 @@
                 "tags": [
                     "SignInTokens"
                 ],
-                "summary": "get a user",
+                "summary": "Login using social credentials",
                 "parameters": [
                     {
-                        "description": "UserSocialLogin",
-                        "name": "UserLogin",
+                        "description": "Social Login Credentials",
+                        "name": "SocailLogin",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dto.ScocialLoginBody"
+                            "$ref": "#/definitions/dto.SocialLoginBody"
                         }
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "OK",
+                        "description": "Successful login response",
                         "schema": {
-                            "$ref": "#/definitions/utils.SuccessResponse"
+                            "$ref": "#/definitions/dto.UserInfoFoward"
                         }
                     },
                     "400": {
-                        "description": "Bad Request",
+                        "description": "Invalid input or authentication error",
                         "schema": {
                             "$ref": "#/definitions/utils.FailedResponse"
                         }
                     },
                     "404": {
-                        "description": "Not Found",
+                        "description": "Resource not found",
                         "schema": {
                             "$ref": "#/definitions/utils.FailedResponse"
                         }
                     },
                     "500": {
-                        "description": "Internal Server Error",
+                        "description": "Internal server error",
                         "schema": {
                             "$ref": "#/definitions/utils.BasicResponse"
                         }
@@ -1049,7 +1139,12 @@
         },
         "/sign_in_tokens/{sign_in_token_id}/": {
             "post": {
-                "description": "Revoke token sign_ins",
+                "security": [
+                    {
+                        "TenantHeader": []
+                    }
+                ],
+                "description": "This endpoint revokes a specific sign-in token, invalidating it and preventing further use.",
                 "consumes": [
                     "application/json"
                 ],
@@ -1059,11 +1154,11 @@
                 "tags": [
                     "SignInTokens"
                 ],
-                "summary": "Revoke token sign_ins",
+                "summary": "Revoke a sign-in token",
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "sign_in_token_id",
+                        "description": "The ID of the sign-in token to revoke",
                         "name": "sign_in_token_id",
                         "in": "path",
                         "required": true
@@ -1071,25 +1166,25 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "OK",
+                        "description": "Successful revocation response",
                         "schema": {
                             "$ref": "#/definitions/utils.SuccessResponse"
                         }
                     },
                     "400": {
-                        "description": "Bad Request",
+                        "description": "Invalid request or token ID",
                         "schema": {
                             "$ref": "#/definitions/utils.FailedResponse"
                         }
                     },
                     "404": {
-                        "description": "Not Found",
+                        "description": "Token not found",
                         "schema": {
                             "$ref": "#/definitions/utils.FailedResponse"
                         }
                     },
                     "500": {
-                        "description": "Internal Server Error",
+                        "description": "Internal server error",
                         "schema": {
                             "$ref": "#/definitions/utils.BasicResponse"
                         }
@@ -1099,7 +1194,12 @@
         },
         "/signup/": {
             "post": {
-                "description": "Signup accounts",
+                "security": [
+                    {
+                        "TenantHeader": []
+                    }
+                ],
+                "description": "This endpoint allows for the creation of a new user account. The request requires a `Tenant-Header` for authentication.",
                 "consumes": [
                     "application/json"
                 ],
@@ -1107,12 +1207,12 @@
                     "application/json"
                 ],
                 "tags": [
-                    "Accounts"
+                    "Members"
                 ],
-                "summary": "Signup accounts",
+                "summary": "Sign up a new user account",
                 "parameters": [
                     {
-                        "description": "SignupUser",
+                        "description": "User signup details",
                         "name": "SignupUser",
                         "in": "body",
                         "required": true,
@@ -1123,25 +1223,25 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "OK",
+                        "description": "Successful signup response",
                         "schema": {
                             "$ref": "#/definitions/utils.SuccessResponse"
                         }
                     },
                     "400": {
-                        "description": "Bad Request",
+                        "description": "Bad request due to validation errors or other issues",
                         "schema": {
                             "$ref": "#/definitions/utils.FailedResponse"
                         }
                     },
                     "404": {
-                        "description": "Not Found",
+                        "description": "Not found, such as if the user already exists",
                         "schema": {
                             "$ref": "#/definitions/utils.FailedResponse"
                         }
                     },
                     "500": {
-                        "description": "Internal Server Error",
+                        "description": "Internal server error",
                         "schema": {
                             "$ref": "#/definitions/utils.BasicResponse"
                         }
@@ -1151,7 +1251,7 @@
         },
         "/verify/": {
             "post": {
-                "description": "VerifyCodeByMail accounts",
+                "description": "Verifies the code sent to the user's email address. If the code is valid and matches, the verification is successful.",
                 "consumes": [
                     "application/json"
                 ],
@@ -1159,12 +1259,12 @@
                     "application/json"
                 ],
                 "tags": [
-                    "Authencators"
+                    "Authenticators"
                 ],
-                "summary": "VerifyCodeByMail accounts",
+                "summary": "Verify Code By Mail",
                 "parameters": [
                     {
-                        "description": "VerificationBase",
+                        "description": "VerificationBase Request Body",
                         "name": "VerificationBase",
                         "in": "body",
                         "required": true,
@@ -1175,25 +1275,25 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "OK",
+                        "description": "Successful response indicating the code verification was successful",
                         "schema": {
-                            "$ref": "#/definitions/utils.SuccessResponse"
+                            "$ref": "#/definitions/dto.UserInfoFoward"
                         }
                     },
                     "400": {
-                        "description": "Bad Request",
+                        "description": "Bad request due to invalid input or other issues",
                         "schema": {
                             "$ref": "#/definitions/utils.FailedResponse"
                         }
                     },
                     "404": {
-                        "description": "Not Found",
+                        "description": "Not found if the email or code is not found",
                         "schema": {
                             "$ref": "#/definitions/utils.FailedResponse"
                         }
                     },
                     "500": {
-                        "description": "Internal Server Error",
+                        "description": "Internal server error",
                         "schema": {
                             "$ref": "#/definitions/utils.BasicResponse"
                         }
@@ -1203,7 +1303,12 @@
         },
         "/{session_id}/refresh_tokens/": {
             "post": {
-                "description": "RefreshToken accounts",
+                "security": [
+                    {
+                        "TenantHeader": []
+                    }
+                ],
+                "description": "This endpoint refreshes the session token using the provided session ID. Requires `Tenant-Header` for authorization.",
                 "consumes": [
                     "application/json"
                 ],
@@ -1211,13 +1316,13 @@
                     "application/json"
                 ],
                 "tags": [
-                    "Accounts"
+                    "Sessions"
                 ],
-                "summary": "RefreshToken accounts",
+                "summary": "Refresh session token",
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "session_id",
+                        "description": "Session ID to refresh",
                         "name": "session_id",
                         "in": "path",
                         "required": true
@@ -1225,25 +1330,25 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "OK",
+                        "description": "Successful token refresh response",
                         "schema": {
                             "$ref": "#/definitions/utils.SuccessResponse"
                         }
                     },
                     "400": {
-                        "description": "Bad Request",
+                        "description": "Bad request due to validation errors or other issues",
                         "schema": {
                             "$ref": "#/definitions/utils.FailedResponse"
                         }
                     },
                     "404": {
-                        "description": "Not Found",
+                        "description": "Not found, such as if the session does not exist",
                         "schema": {
                             "$ref": "#/definitions/utils.FailedResponse"
                         }
                     },
                     "500": {
-                        "description": "Internal Server Error",
+                        "description": "Internal server error",
                         "schema": {
                             "$ref": "#/definitions/utils.BasicResponse"
                         }
@@ -1253,7 +1358,12 @@
         },
         "/{session_id}/sign_outs/": {
             "post": {
-                "description": "LogoutAuth accounts",
+                "security": [
+                    {
+                        "TenantHeader": []
+                    }
+                ],
+                "description": "This endpoint logs out a user by invalidating their session. Requires a “Tenant-Header“ for authorization.",
                 "consumes": [
                     "application/json"
                 ],
@@ -1263,11 +1373,11 @@
                 "tags": [
                     "SignOuts"
                 ],
-                "summary": "LogoutAuth accounts",
+                "summary": "Log out a user session",
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "session_id",
+                        "description": "Session ID to be logged out",
                         "name": "session_id",
                         "in": "path",
                         "required": true
@@ -1275,25 +1385,25 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "OK",
+                        "description": "Successful logout response",
                         "schema": {
                             "$ref": "#/definitions/utils.SuccessResponse"
                         }
                     },
                     "400": {
-                        "description": "Bad Request",
+                        "description": "Bad request due to validation errors or other issues",
                         "schema": {
                             "$ref": "#/definitions/utils.FailedResponse"
                         }
                     },
                     "404": {
-                        "description": "Not Found",
+                        "description": "Not found, such as if the session does not exist",
                         "schema": {
                             "$ref": "#/definitions/utils.FailedResponse"
                         }
                     },
                     "500": {
-                        "description": "Internal Server Error",
+                        "description": "Internal server error",
                         "schema": {
                             "$ref": "#/definitions/utils.BasicResponse"
                         }
@@ -1303,43 +1413,6 @@
         }
     },
     "definitions": {
-        "dto.ApiKeyConf": {
-            "type": "object",
-            "properties": {
-                "jwt_private_key": {
-                    "type": "string"
-                },
-                "jwt_public_key": {
-                    "type": "string"
-                },
-                "public_key": {
-                    "type": "string"
-                },
-                "secret_keys": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/dto.SecretKeyConf"
-                    }
-                }
-            }
-        },
-        "dto.AuthenticationSetting": {
-            "type": "object",
-            "properties": {
-                "email_verification_link": {
-                    "$ref": "#/definitions/dto.BaseSetting"
-                },
-                "passkey": {
-                    "$ref": "#/definitions/dto.BaseSetting"
-                },
-                "password": {
-                    "$ref": "#/definitions/dto.BaseSetting"
-                },
-                "sms_verification_code": {
-                    "$ref": "#/definitions/dto.BaseSetting"
-                }
-            }
-        },
         "dto.AuthorizeReq": {
             "type": "object",
             "properties": {
@@ -1358,41 +1431,23 @@
                 }
             }
         },
-        "dto.BaseSetting": {
-            "type": "object",
-            "properties": {
-                "is_enable": {
-                    "type": "boolean"
-                },
-                "setting": {
-                    "$ref": "#/definitions/dto.SettingValue"
-                }
-            }
-        },
-        "dto.ContactSetting": {
-            "type": "object",
-            "properties": {
-                "email": {
-                    "$ref": "#/definitions/dto.BaseSetting"
-                },
-                "phone_number": {
-                    "$ref": "#/definitions/dto.BaseSetting"
-                }
-            }
-        },
         "dto.GoogleAuthenticator": {
             "type": "object",
+            "required": [
+                "auth_type",
+                "code"
+            ],
             "properties": {
                 "auth_type": {
+                    "description": "AuthType indicates the type of authentication (e.g., 'email', 'sms', 'auth_code').\nrequired: true\nexample: \"auth_code\"",
                     "type": "string"
                 },
                 "code": {
-                    "type": "string"
-                },
-                "secret": {
+                    "description": "Code is the 2FA code provided by the user.\nrequired: true\nexample: \"123456\"",
                     "type": "string"
                 },
                 "user_id": {
+                    "description": "UserID represents the ID of the user for whom the 2FA is being validated.\nrequired: true\nexample: 123",
                     "type": "integer"
                 }
             }
@@ -1408,93 +1463,19 @@
                 }
             }
         },
-        "dto.JWTConfig": {
-            "type": "object",
-            "properties": {
-                "access_token_lifetime": {
-                    "type": "integer"
-                },
-                "auth_header_name": {
-                    "type": "string"
-                },
-                "auth_header_type": {
-                    "type": "string"
-                },
-                "claim": {
-                    "type": "string"
-                },
-                "is_rotate_refresh_token": {
-                    "type": "boolean"
-                },
-                "issuer": {
-                    "type": "string"
-                },
-                "refresh_token_lifetime": {
-                    "type": "integer"
-                },
-                "signing_algorithm": {
-                    "type": "string"
-                },
-                "signing_key": {
-                    "type": "string"
-                },
-                "signing_key_pub": {
-                    "type": "string"
-                }
-            }
-        },
         "dto.LoginAuth": {
             "type": "object",
+            "required": [
+                "password",
+                "username"
+            ],
             "properties": {
-                "application_id": {
-                    "type": "string"
-                },
-                "code": {
-                    "type": "string"
-                },
-                "domain": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "instance_id": {
-                    "type": "string"
-                },
-                "is_deleted": {
-                    "type": "boolean"
-                },
-                "jwt_config": {
-                    "$ref": "#/definitions/dto.JWTConfig"
-                },
-                "last_ip": {
-                    "type": "string"
-                },
-                "mode": {
-                    "type": "integer"
-                },
                 "password": {
+                    "description": "Password is the password of the user\nrequired: true\nexample: abc@123X",
                     "type": "string"
-                },
-                "schema_name": {
-                    "type": "string"
-                },
-                "session": {
-                    "$ref": "#/definitions/dto.SessionSetting"
-                },
-                "social_connections": {
-                    "$ref": "#/definitions/dto.SocialSetting"
-                },
-                "userId": {
-                    "type": "integer"
-                },
-                "user_agent": {
-                    "type": "string"
-                },
-                "user_general_setting": {
-                    "$ref": "#/definitions/dto.UserSetting"
                 },
                 "username": {
+                    "description": "Username is the email address of the user\nrequired: true\nexample: leomessi305@gmail.com",
                     "type": "string"
                 }
             }
@@ -1516,89 +1497,26 @@
                 }
             }
         },
-        "dto.MultiFactorSetting": {
-            "type": "object",
-            "properties": {
-                "methods": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/dto.MultiFactorProvider"
-                    }
-                }
-            }
-        },
-        "dto.PermissionSetting": {
-            "type": "object"
-        },
-        "dto.PersonalSetting": {
-            "type": "object",
-            "properties": {
-                "name": {
-                    "$ref": "#/definitions/dto.BaseSetting"
-                }
-            }
-        },
         "dto.RecoveryCodeDto": {
             "type": "object",
+            "required": [
+                "auth_type",
+                "code",
+                "email"
+            ],
             "properties": {
-                "application_id": {
-                    "type": "string"
-                },
                 "auth_type": {
+                    "description": "AuthType indicates the type of authentication (e.g., email, SMS).\nrequired: true\nexample: 1.\"email\" 2.\"sms\" 3.\"auth_code\"",
                     "type": "string"
                 },
                 "code": {
-                    "type": "string"
-                },
-                "domain": {
+                    "description": "Code is the verification code provided by the user.\nrequired: true\nexample: \"123456\"",
                     "type": "string"
                 },
                 "email": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "instance_id": {
-                    "type": "string"
-                },
-                "is_deleted": {
-                    "type": "boolean"
-                },
-                "jwt_config": {
-                    "$ref": "#/definitions/dto.JWTConfig"
-                },
-                "last_ip": {
-                    "type": "string"
-                },
-                "mode": {
-                    "type": "integer"
-                },
-                "schema_name": {
-                    "type": "string"
-                },
-                "session": {
-                    "$ref": "#/definitions/dto.SessionSetting"
-                },
-                "social_connections": {
-                    "$ref": "#/definitions/dto.SocialSetting"
-                },
-                "userId": {
-                    "type": "integer"
-                },
-                "user_agent": {
-                    "type": "string"
-                },
-                "user_general_setting": {
-                    "$ref": "#/definitions/dto.UserSetting"
-                }
-            }
-        },
-        "dto.RefreshAuth": {
-            "type": "object",
-            "properties": {
-                "refresh_token": {
-                    "type": "string"
+                    "description": "EmailOrPhone is the email or phone number to which the verification code was sent.\nrequired: true\nmaxLength: 255\nexample: \"user@example.com\"",
+                    "type": "string",
+                    "maxLength": 255
                 }
             }
         },
@@ -1609,131 +1527,16 @@
             ],
             "properties": {
                 "new_password": {
+                    "description": "NewPassword is the new password that the user wants to set.\nrequired: true\nminLength: 6\nmaxLength: 128\nexample: \"NewPassword123!\"",
                     "type": "string",
                     "maxLength": 128,
                     "minLength": 6
                 },
                 "new_password_confirm": {
+                    "description": "NewPasswordConfirm is the confirmation of the new password.\nrequired: true\nmust be equal to NewPassword\nexample: \"NewPassword123!\"",
                     "type": "string"
                 }
             }
-        },
-        "dto.ScocialLoginBody": {
-            "type": "object",
-            "properties": {
-                "application_id": {
-                    "type": "string"
-                },
-                "client_id": {
-                    "type": "string"
-                },
-                "code": {
-                    "type": "string"
-                },
-                "domain": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "instance_id": {
-                    "type": "string"
-                },
-                "is_deleted": {
-                    "type": "boolean"
-                },
-                "jwt_config": {
-                    "$ref": "#/definitions/dto.JWTConfig"
-                },
-                "last_ip": {
-                    "type": "string"
-                },
-                "mode": {
-                    "type": "integer"
-                },
-                "provider_access_token": {
-                    "type": "string"
-                },
-                "provider_code": {
-                    "type": "string"
-                },
-                "provider_name": {
-                    "type": "string"
-                },
-                "schema_name": {
-                    "type": "string"
-                },
-                "session": {
-                    "$ref": "#/definitions/dto.SessionSetting"
-                },
-                "social_connections": {
-                    "$ref": "#/definitions/dto.SocialSetting"
-                },
-                "userId": {
-                    "type": "integer"
-                },
-                "user_agent": {
-                    "type": "string"
-                },
-                "user_general_setting": {
-                    "$ref": "#/definitions/dto.UserSetting"
-                }
-            }
-        },
-        "dto.SecretKeyConf": {
-            "type": "object",
-            "properties": {
-                "name": {
-                    "type": "string"
-                },
-                "slug": {
-                    "type": "string"
-                },
-                "value": {
-                    "type": "string"
-                }
-            }
-        },
-        "dto.SessionConf": {
-            "type": "object",
-            "properties": {
-                "claim": {
-                    "type": "string"
-                },
-                "interactive_layout": {
-                    "type": "integer"
-                },
-                "interactive_layout_unit": {
-                    "type": "string"
-                },
-                "is_enable_interactive_layout": {
-                    "type": "boolean"
-                },
-                "is_enable_maximum_lifetime": {
-                    "type": "boolean"
-                },
-                "maximum_lifetime": {
-                    "type": "integer"
-                },
-                "name": {
-                    "type": "string"
-                }
-            }
-        },
-        "dto.SessionSetting": {
-            "type": "object",
-            "properties": {
-                "api_key": {
-                    "$ref": "#/definitions/dto.ApiKeyConf"
-                },
-                "session": {
-                    "$ref": "#/definitions/dto.SessionConf"
-                }
-            }
-        },
-        "dto.SettingValue": {
-            "type": "object",
-            "additionalProperties": true
         },
         "dto.SignupUser": {
             "type": "object",
@@ -1744,79 +1547,66 @@
             ],
             "properties": {
                 "email": {
+                    "description": "Email is the user's email address.\nrequired: true\nmaxLength: 255\nexample: \"user@example.com\"",
                     "type": "string",
                     "maxLength": 255
                 },
                 "first_name": {
+                    "description": "FirstName is the user's first name.\nmaxLength: 255\nexample: \"John\"",
                     "type": "string",
                     "maxLength": 255
                 },
                 "last_name": {
+                    "description": "LastName is the user's last name.\nmaxLength: 255\nexample: \"Doe\"",
                     "type": "string",
                     "maxLength": 255
                 },
                 "password": {
+                    "description": "Password is the user's password.\nrequired: true\nminLength: 6\nmaxLength: 32\nexample: \"P@ssw0rd123\"",
                     "type": "string",
                     "maxLength": 32,
                     "minLength": 6
                 },
                 "password_confirm": {
+                    "description": "PasswordConfirm is the confirmation of the user's password.\nrequired: true\nmust match the Password field\nexample: \"P@ssw0rd123\"",
                     "type": "string"
                 }
             }
         },
-        "dto.SocialProvider": {
+        "dto.SocialLoginBody": {
+            "type": "object",
+            "required": [
+                "provider_name"
+            ],
+            "properties": {
+                "provider_access_token": {
+                    "description": "ProviderAccessToken is the provider token of client\nrequired: true\nexample: \"eyKaaasd....\"",
+                    "type": "string"
+                },
+                "provider_code": {
+                    "description": "ProviderAccessToken is the provider code of client\nrequired: true\nexample: \"elKaaasd....\"",
+                    "type": "string"
+                },
+                "provider_name": {
+                    "description": "ProviderName is the provider name of client\nrequired: true\nexample: google",
+                    "type": "string"
+                }
+            }
+        },
+        "dto.TokenInfomation": {
             "type": "object",
             "properties": {
-                "auth_provider": {
+                "expired_at": {
                     "type": "string"
                 },
-                "is_enable": {
-                    "type": "boolean"
-                },
-                "order": {
-                    "type": "integer"
-                },
-                "setting": {
-                    "$ref": "#/definitions/dto.SocialProviderSetting"
-                }
-            }
-        },
-        "dto.SocialProviderSetting": {
-            "type": "object",
-            "properties": {
-                "client_id": {
+                "session_id": {
                     "type": "string"
                 },
-                "client_secret": {
+                "session_name": {
                     "type": "string"
                 },
-                "is_allow": {
-                    "type": "boolean"
-                },
-                "is_block_sub_addresses": {
-                    "type": "boolean"
-                },
-                "is_use_custom_credential": {
-                    "type": "boolean"
-                },
-                "redirect_uri": {
+                "session_token": {
                     "type": "string"
-                },
-                "scopes": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                }
-            }
-        },
-        "dto.SocialSetting": {
-            "type": "object",
-            "additionalProperties": {
-                "type": "array",
-                "items": {
-                    "$ref": "#/definitions/dto.SocialProvider"
                 }
             }
         },
@@ -1827,6 +1617,7 @@
             ],
             "properties": {
                 "auth_type": {
+                    "description": "AuthType indicates the type of authentication (e.g., email, SMS).\nrequired: true\nexample: 1.\"email\" 2.\"sms\" 3.\"auth_code\"",
                     "type": "string"
                 }
             }
@@ -1839,14 +1630,17 @@
             ],
             "properties": {
                 "new_password": {
+                    "description": "NewPassword is the new password that the user wants to set.\nrequired: true\nminLength: 6\nmaxLength: 128\nexample: \"NewPassword123!\"",
                     "type": "string",
                     "maxLength": 128,
                     "minLength": 6
                 },
                 "new_password_confirm": {
+                    "description": "NewPasswordConfirm is the confirmation of the new password.\nrequired: true\nmust be equal to NewPassword\nexample: \"NewPassword123!\"",
                     "type": "string"
                 },
                 "old_password": {
+                    "description": "OldPassword is the current password of the user.\nrequired: true\nminLength: 6\nmaxLength: 128\nexample: \"OldPassword123!\"",
                     "type": "string",
                     "maxLength": 128,
                     "minLength": 6
@@ -1857,13 +1651,16 @@
             "type": "object",
             "properties": {
                 "additional_information": {
+                    "description": "AdditionalInformation contains extra user details in a flexible format\nexample: {\"address1\": \"123 Main St\", \"city\": \"New York\"}",
                     "type": "object",
                     "additionalProperties": true
                 },
                 "first_name": {
+                    "description": "FirstName is the user's first name\nrequired: true\nexample: \"John\"",
                     "type": "string"
                 },
                 "last_name": {
+                    "description": "LastName is the user's last name\nrequired: true\nexample: \"Doe\"",
                     "type": "string"
                 }
             }
@@ -1913,34 +1710,32 @@
                 }
             }
         },
-        "dto.UserSetting": {
+        "dto.UserInfoFoward": {
             "type": "object",
             "properties": {
-                "authentication_strategies": {
-                    "$ref": "#/definitions/dto.AuthenticationSetting"
+                "second_factor": {
+                    "description": "Second factor information, if any",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/dto.MultiFactorProvider"
+                        }
+                    ]
                 },
-                "contact": {
-                    "$ref": "#/definitions/dto.ContactSetting"
+                "token": {
+                    "description": "Authentication token information",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/dto.TokenInfomation"
+                        }
+                    ]
                 },
-                "multi_factors": {
-                    "$ref": "#/definitions/dto.MultiFactorSetting"
-                },
-                "perrmission": {
-                    "$ref": "#/definitions/dto.PermissionSetting"
-                },
-                "personal": {
-                    "$ref": "#/definitions/dto.PersonalSetting"
-                },
-                "username": {
-                    "$ref": "#/definitions/dto.UsernameSetting"
-                }
-            }
-        },
-        "dto.UsernameSetting": {
-            "type": "object",
-            "properties": {
-                "username": {
-                    "$ref": "#/definitions/dto.BaseSetting"
+                "user": {
+                    "description": "User information",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/dto.UserInfo"
+                        }
+                    ]
                 }
             }
         },
@@ -1952,14 +1747,17 @@
             ],
             "properties": {
                 "auth_type": {
+                    "description": "AuthType indicates the type of authentication (e.g., email, SMS).\nrequired: true\nexample: 1.\"email\" 2.\"sms\" 3.\"auth_code\"",
                     "type": "string"
                 },
                 "code": {
+                    "description": "Code is the verification code provided by the user.\nexample: \"123456\"",
                     "type": "string"
                 },
                 "email_or_phone": {
+                    "description": "EmailOrPhone is the email or phone number to which the verification code was sent.\nrequired: true\nmaxLength: 255\nexample: \"user@example.com\"",
                     "type": "string",
-                    "maxLength": 100
+                    "maxLength": 255
                 }
             }
         },
@@ -2026,6 +1824,16 @@
         "Bearer": {
             "type": "apiKey",
             "name": "Authorization",
+            "in": "header"
+        },
+        "TemplateSlug": {
+            "type": "apiKey",
+            "name": "Template-Slug",
+            "in": "header"
+        },
+        "TenantHeader": {
+            "type": "apiKey",
+            "name": "Tenant-Header",
             "in": "header"
         }
     }
