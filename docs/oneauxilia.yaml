@@ -455,7 +455,7 @@ paths:
       summary: Log out a user session
       tags:
       - SignOuts
-  /authencator/regenerate_recovery_codes/:
+  /authenticator/regenerate_recovery_codes/:
     post:
       consumes:
       - application/json
@@ -481,41 +481,6 @@ paths:
           schema:
             $ref: '#/definitions/utils.BasicResponse'
       summary: Regenerate Recovery Code
-      tags:
-      - Authenticators
-  /authencator/valid_recovery_codes/:
-    post:
-      consumes:
-      - application/json
-      description: Validates a recovery code used for user authentication or account
-        recovery.
-      parameters:
-      - description: RecoveryCodeDto
-        in: body
-        name: RecoveryCodeDto
-        required: true
-        schema:
-          $ref: '#/definitions/dto.RecoveryCodeDto'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Successful validation of the recovery code
-          schema:
-            $ref: '#/definitions/utils.SuccessResponse'
-        "400":
-          description: Invalid request or recovery code
-          schema:
-            $ref: '#/definitions/utils.FailedResponse'
-        "404":
-          description: Recovery code not found or user not found
-          schema:
-            $ref: '#/definitions/utils.FailedResponse'
-        "500":
-          description: Internal server error
-          schema:
-            $ref: '#/definitions/utils.BasicResponse'
-      summary: Validate Recovery Code
       tags:
       - Authenticators
   /authenticator/update_secret_key/{user_id}/:
@@ -556,6 +521,41 @@ paths:
           schema:
             $ref: '#/definitions/utils.BasicResponse'
       summary: Update seconds factor Secret Key
+      tags:
+      - Authenticators
+  /authenticator/valid_recovery_codes/:
+    post:
+      consumes:
+      - application/json
+      description: Validates a recovery code used for user authentication or account
+        recovery.
+      parameters:
+      - description: RecoveryCodeDto
+        in: body
+        name: RecoveryCodeDto
+        required: true
+        schema:
+          $ref: '#/definitions/dto.RecoveryCodeDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful validation of the recovery code
+          schema:
+            $ref: '#/definitions/utils.SuccessResponse'
+        "400":
+          description: Invalid request or recovery code
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "404":
+          description: Recovery code not found or user not found
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/utils.BasicResponse'
+      summary: Validate Recovery Code
       tags:
       - Authenticators
   /authenticator/validate/:

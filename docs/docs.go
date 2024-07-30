@@ -24,7 +24,7 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/authencator/regenerate_recovery_codes/": {
+        "/authenticator/regenerate_recovery_codes/": {
             "post": {
                 "description": "Generates a new recovery code for account recovery or authentication purposes.",
                 "consumes": [
@@ -52,58 +52,6 @@ const docTemplate = `{
                     },
                     "404": {
                         "description": "User not found or account issue",
-                        "schema": {
-                            "$ref": "#/definitions/utils.FailedResponse"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal server error",
-                        "schema": {
-                            "$ref": "#/definitions/utils.BasicResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/authencator/valid_recovery_codes/": {
-            "post": {
-                "description": "Validates a recovery code used for user authentication or account recovery.",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Authenticators"
-                ],
-                "summary": "Validate Recovery Code",
-                "parameters": [
-                    {
-                        "description": "RecoveryCodeDto",
-                        "name": "RecoveryCodeDto",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/dto.RecoveryCodeDto"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successful validation of the recovery code",
-                        "schema": {
-                            "$ref": "#/definitions/utils.SuccessResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "Invalid request or recovery code",
-                        "schema": {
-                            "$ref": "#/definitions/utils.FailedResponse"
-                        }
-                    },
-                    "404": {
-                        "description": "Recovery code not found or user not found",
                         "schema": {
                             "$ref": "#/definitions/utils.FailedResponse"
                         }
@@ -163,6 +111,58 @@ const docTemplate = `{
                     },
                     "404": {
                         "description": "Not found if the email is not found",
+                        "schema": {
+                            "$ref": "#/definitions/utils.FailedResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/utils.BasicResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/authenticator/valid_recovery_codes/": {
+            "post": {
+                "description": "Validates a recovery code used for user authentication or account recovery.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Authenticators"
+                ],
+                "summary": "Validate Recovery Code",
+                "parameters": [
+                    {
+                        "description": "RecoveryCodeDto",
+                        "name": "RecoveryCodeDto",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.RecoveryCodeDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful validation of the recovery code",
+                        "schema": {
+                            "$ref": "#/definitions/utils.SuccessResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request or recovery code",
+                        "schema": {
+                            "$ref": "#/definitions/utils.FailedResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Recovery code not found or user not found",
                         "schema": {
                             "$ref": "#/definitions/utils.FailedResponse"
                         }
