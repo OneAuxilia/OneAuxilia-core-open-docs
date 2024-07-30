@@ -24,7 +24,7 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/authenticator/regenerate_recovery_codes/": {
+        "/auth/regenerate_recovery_codes/": {
             "post": {
                 "description": "Generates a new recovery code for account recovery or authentication purposes.",
                 "consumes": [
@@ -65,7 +65,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/authenticator/update_secret_key/{user_id}/": {
+        "/auth/update_secret_key/{user_id}/": {
             "put": {
                 "description": "Updates the two-factor authentication (2FA) secret key associated with the provided email address.",
                 "consumes": [
@@ -124,7 +124,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/authenticator/valid_recovery_codes/": {
+        "/auth/valid_recovery_codes/": {
             "post": {
                 "description": "Validates a recovery code used for user authentication or account recovery.",
                 "consumes": [
@@ -176,7 +176,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/authenticator/validate/": {
+        "/auth/validate/": {
             "post": {
                 "description": "Validates the provided two-factor authentication (2FA) credentials for an existing user.",
                 "consumes": [
@@ -228,7 +228,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/authenticator/validate/sign_ins/": {
+        "/auth/validate/sign_ins/": {
             "post": {
                 "description": "Validates the provided two-factor authentication (2FA) credentials for an existing user.",
                 "consumes": [

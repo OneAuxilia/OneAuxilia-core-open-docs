@@ -455,7 +455,7 @@ paths:
       summary: Log out a user session
       tags:
       - SignOuts
-  /authenticator/regenerate_recovery_codes/:
+  /auth/regenerate_recovery_codes/:
     post:
       consumes:
       - application/json
@@ -483,7 +483,7 @@ paths:
       summary: Regenerate Recovery Code
       tags:
       - Authenticators
-  /authenticator/update_secret_key/{user_id}/:
+  /auth/update_secret_key/{user_id}/:
     put:
       consumes:
       - application/json
@@ -523,7 +523,7 @@ paths:
       summary: Update seconds factor Secret Key
       tags:
       - Authenticators
-  /authenticator/valid_recovery_codes/:
+  /auth/valid_recovery_codes/:
     post:
       consumes:
       - application/json
@@ -558,7 +558,7 @@ paths:
       summary: Validate Recovery Code
       tags:
       - Authenticators
-  /authenticator/validate/:
+  /auth/validate/:
     post:
       consumes:
       - application/json
@@ -593,7 +593,7 @@ paths:
       summary: Validate seconds factor Credentials
       tags:
       - Authenticators
-  /authenticator/validate/sign_ins/:
+  /auth/validate/sign_ins/:
     post:
       consumes:
       - application/json
