@@ -117,7 +117,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/authenticator/update_secret_key/{email}/": {
+        "/authenticator/update_secret_key/{user_id}/": {
             "put": {
                 "description": "Updates the two-factor authentication (2FA) secret key associated with the provided email address.",
                 "consumes": [
@@ -134,7 +134,7 @@ const docTemplate = `{
                     {
                         "type": "string",
                         "description": "User Email Address",
-                        "name": "email",
+                        "name": "user_id",
                         "in": "path",
                         "required": true
                     },
@@ -339,7 +339,7 @@ const docTemplate = `{
         },
         "/environment/": {
             "post": {
-                "description": "LoadAllConfig user",
+                "description": "Retrieves and loads all configuration settings for the environment.",
                 "consumes": [
                     "application/json"
                 ],
@@ -349,28 +349,28 @@ const docTemplate = `{
                 "tags": [
                     "Environment"
                 ],
-                "summary": "LoadAllConfig user",
+                "summary": "Load all configuration settings",
                 "responses": {
                     "200": {
-                        "description": "OK",
+                        "description": "Configuration settings loaded successfully",
                         "schema": {
                             "$ref": "#/definitions/utils.SuccessResponse"
                         }
                     },
                     "400": {
-                        "description": "Bad Request",
+                        "description": "Bad request due to invalid input or other issues",
                         "schema": {
                             "$ref": "#/definitions/utils.FailedResponse"
                         }
                     },
                     "404": {
-                        "description": "Not Found",
+                        "description": "Configuration settings not found",
                         "schema": {
                             "$ref": "#/definitions/utils.FailedResponse"
                         }
                     },
                     "500": {
-                        "description": "Internal Server Error",
+                        "description": "Internal server error",
                         "schema": {
                             "$ref": "#/definitions/utils.BasicResponse"
                         }
@@ -754,9 +754,12 @@ const docTemplate = `{
                 "security": [
                     {
                         "Bearer": []
+                    },
+                    {
+                        "TenantHeader": []
                     }
                 ],
-                "description": "GetSession user",
+                "description": "Retrieves the details of the current user session.",
                 "consumes": [
                     "application/json"
                 ],
@@ -766,28 +769,28 @@ const docTemplate = `{
                 "tags": [
                     "Sessions"
                 ],
-                "summary": "GetSession user",
+                "summary": "Get user session details",
                 "responses": {
                     "200": {
-                        "description": "OK",
+                        "description": "Session details retrieved successfully",
                         "schema": {
                             "$ref": "#/definitions/utils.SuccessResponse"
                         }
                     },
                     "400": {
-                        "description": "Bad Request",
+                        "description": "Bad request due to invalid input or other issues",
                         "schema": {
                             "$ref": "#/definitions/utils.FailedResponse"
                         }
                     },
                     "404": {
-                        "description": "Not Found",
+                        "description": "Session not found",
                         "schema": {
                             "$ref": "#/definitions/utils.FailedResponse"
                         }
                     },
                     "500": {
-                        "description": "Internal Server Error",
+                        "description": "Internal server error",
                         "schema": {
                             "$ref": "#/definitions/utils.BasicResponse"
                         }
@@ -850,14 +853,17 @@ const docTemplate = `{
                 }
             }
         },
-        "/sessions/{session_id}/revoke//": {
+        "/sessions/verify_tokens/": {
             "post": {
                 "security": [
                     {
-                        "Bearer": []
+                        "TenantHeader": []
+                    },
+                    {
+                        "TemplateSlug": []
                     }
                 ],
-                "description": "RevokeSession user",
+                "description": "Verifies the validity of a token for user sessions. This endpoint requires the ` + "`" + `TemplateSlug` + "`" + ` header which can be either empty or non-empty.",
                 "consumes": [
                     "application/json"
                 ],
@@ -867,11 +873,66 @@ const docTemplate = `{
                 "tags": [
                     "Sessions"
                 ],
-                "summary": "RevokeSession user",
+                "summary": "VerifyTokens for user sessions",
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "session_id",
+                        "description": "Token to be verified",
+                        "name": "token",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Token is valid",
+                        "schema": {
+                            "$ref": "#/definitions/utils.SuccessResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid token or other issues",
+                        "schema": {
+                            "$ref": "#/definitions/utils.FailedResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Token not found",
+                        "schema": {
+                            "$ref": "#/definitions/utils.FailedResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/utils.BasicResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/sessions/{session_id}/revoke/": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Revokes a user session by its session ID, effectively logging the user out.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Sessions"
+                ],
+                "summary": "Revoke a user session",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Session ID",
                         "name": "session_id",
                         "in": "path",
                         "required": true
@@ -879,25 +940,25 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "OK",
+                        "description": "Session revoked successfully",
                         "schema": {
                             "$ref": "#/definitions/utils.SuccessResponse"
                         }
                     },
                     "400": {
-                        "description": "Bad Request",
+                        "description": "Bad request due to invalid input or other issues",
                         "schema": {
                             "$ref": "#/definitions/utils.FailedResponse"
                         }
                     },
                     "404": {
-                        "description": "Not Found",
+                        "description": "Session not found",
                         "schema": {
                             "$ref": "#/definitions/utils.FailedResponse"
                         }
                     },
                     "500": {
-                        "description": "Internal Server Error",
+                        "description": "Internal server error",
                         "schema": {
                             "$ref": "#/definitions/utils.BasicResponse"
                         }
@@ -978,10 +1039,10 @@ const docTemplate = `{
             "post": {
                 "security": [
                     {
-                        "Bearer": []
+                        "TenantHeader": []
                     }
                 ],
-                "description": "VerifySession user",
+                "description": "Verifies the validity of a user session by its session ID.",
                 "consumes": [
                     "application/json"
                 ],
@@ -991,11 +1052,11 @@ const docTemplate = `{
                 "tags": [
                     "Sessions"
                 ],
-                "summary": "VerifySession user",
+                "summary": "Verify a user session",
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "session_id",
+                        "description": "Session ID",
                         "name": "session_id",
                         "in": "path",
                         "required": true
@@ -1003,25 +1064,25 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "OK",
+                        "description": "Session verified successfully",
                         "schema": {
                             "$ref": "#/definitions/utils.SuccessResponse"
                         }
                     },
                     "400": {
-                        "description": "Bad Request",
+                        "description": "Bad request due to invalid input or other issues",
                         "schema": {
                             "$ref": "#/definitions/utils.FailedResponse"
                         }
                     },
                     "404": {
-                        "description": "Not Found",
+                        "description": "Session not found",
                         "schema": {
                             "$ref": "#/definitions/utils.FailedResponse"
                         }
                     },
                     "500": {
-                        "description": "Internal Server Error",
+                        "description": "Internal server error",
                         "schema": {
                             "$ref": "#/definitions/utils.BasicResponse"
                         }
@@ -1486,23 +1547,6 @@ const docTemplate = `{
                 }
             }
         },
-        "dto.MultiFactorProvider": {
-            "type": "object",
-            "properties": {
-                "is_enable": {
-                    "type": "boolean"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "order": {
-                    "type": "integer"
-                },
-                "type": {
-                    "type": "string"
-                }
-            }
-        },
         "dto.RecoveryCodeDto": {
             "type": "object",
             "required": [
@@ -1662,11 +1706,15 @@ const docTemplate = `{
                     "additionalProperties": true
                 },
                 "first_name": {
-                    "description": "FirstName is the user's first name\nrequired: true\nexample: \"John\"",
+                    "description": "FirstName is the user's first name\nexample: \"John\"",
                     "type": "string"
                 },
                 "last_name": {
-                    "description": "LastName is the user's last name\nrequired: true\nexample: \"Doe\"",
+                    "description": "LastName is the user's last name\nexample: \"Doe\"",
+                    "type": "string"
+                },
+                "second_factor_type": {
+                    "description": "SecondFactorType is the user's second factor type\nexample: \"sms, email, auth_code, none\"",
                     "type": "string"
                 }
             }
@@ -1708,6 +1756,9 @@ const docTemplate = `{
                 "number_of_logins": {
                     "type": "integer"
                 },
+                "second_factor_type": {
+                    "type": "string"
+                },
                 "updated_at": {
                     "type": "string"
                 },
@@ -1719,14 +1770,6 @@ const docTemplate = `{
         "dto.UserInfoFoward": {
             "type": "object",
             "properties": {
-                "second_factor": {
-                    "description": "Second factor information, if any",
-                    "allOf": [
-                        {
-                            "$ref": "#/definitions/dto.MultiFactorProvider"
-                        }
-                    ]
-                },
                 "token": {
                     "description": "Authentication token information",
                     "allOf": [

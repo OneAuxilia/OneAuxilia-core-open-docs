@@ -61,17 +61,6 @@ definitions:
     - password
     - username
     type: object
-  dto.MultiFactorProvider:
-    properties:
-      is_enable:
-        type: boolean
-      name:
-        type: string
-      order:
-        type: integer
-      type:
-        type: string
-    type: object
   dto.RecoveryCodeDto:
     properties:
       auth_type:
@@ -256,14 +245,17 @@ definitions:
       first_name:
         description: |-
           FirstName is the user's first name
-          required: true
           example: "John"
         type: string
       last_name:
         description: |-
           LastName is the user's last name
-          required: true
           example: "Doe"
+        type: string
+      second_factor_type:
+        description: |-
+          SecondFactorType is the user's second factor type
+          example: "sms, email, auth_code, none"
         type: string
     type: object
   dto.UserInfo:
@@ -291,6 +283,8 @@ definitions:
         type: string
       number_of_logins:
         type: integer
+      second_factor_type:
+        type: string
       updated_at:
         type: string
       username:
@@ -298,10 +292,6 @@ definitions:
     type: object
   dto.UserInfoFoward:
     properties:
-      second_factor:
-        allOf:
-        - $ref: '#/definitions/dto.MultiFactorProvider'
-        description: Second factor information, if any
       token:
         allOf:
         - $ref: '#/definitions/dto.TokenInfomation'
@@ -528,7 +518,7 @@ paths:
       summary: Validate Recovery Code
       tags:
       - Authenticators
-  /authenticator/update_secret_key/{email}/:
+  /authenticator/update_secret_key/{user_id}/:
     put:
       consumes:
       - application/json
@@ -537,7 +527,7 @@ paths:
       parameters:
       - description: User Email Address
         in: path
-        name: email
+        name: user_id
         required: true
         type: string
       - description: TwoFASetting Request Body
@@ -679,27 +669,27 @@ paths:
     post:
       consumes:
       - application/json
-      description: LoadAllConfig user
+      description: Retrieves and loads all configuration settings for the environment.
       produces:
       - application/json
       responses:
         "200":
-          description: OK
+          description: Configuration settings loaded successfully
           schema:
             $ref: '#/definitions/utils.SuccessResponse'
         "400":
-          description: Bad Request
+          description: Bad request due to invalid input or other issues
           schema:
             $ref: '#/definitions/utils.FailedResponse'
         "404":
-          description: Not Found
+          description: Configuration settings not found
           schema:
             $ref: '#/definitions/utils.FailedResponse'
         "500":
-          description: Internal Server Error
+          description: Internal server error
           schema:
             $ref: '#/definitions/utils.BasicResponse'
-      summary: LoadAllConfig user
+      summary: Load all configuration settings
       tags:
       - Environment
   /generate/:
@@ -945,38 +935,40 @@ paths:
     get:
       consumes:
       - application/json
-      description: GetSession user
+      description: Retrieves the details of the current user session.
       produces:
       - application/json
       responses:
         "200":
-          description: OK
+          description: Session details retrieved successfully
           schema:
             $ref: '#/definitions/utils.SuccessResponse'
         "400":
-          description: Bad Request
+          description: Bad request due to invalid input or other issues
           schema:
             $ref: '#/definitions/utils.FailedResponse'
         "404":
-          description: Not Found
+          description: Session not found
           schema:
             $ref: '#/definitions/utils.FailedResponse'
         "500":
-          description: Internal Server Error
+          description: Internal server error
           schema:
             $ref: '#/definitions/utils.BasicResponse'
       security:
       - Bearer: []
-      summary: GetSession user
+      - TenantHeader: []
+      summary: Get user session details
       tags:
       - Sessions
-  /sessions/{session_id}/revoke//:
+  /sessions/{session_id}/revoke/:
     post:
       consumes:
       - application/json
-      description: RevokeSession user
+      description: Revokes a user session by its session ID, effectively logging the
+        user out.
       parameters:
-      - description: session_id
+      - description: Session ID
         in: path
         name: session_id
         required: true
@@ -985,24 +977,24 @@ paths:
       - application/json
       responses:
         "200":
-          description: OK
+          description: Session revoked successfully
           schema:
             $ref: '#/definitions/utils.SuccessResponse'
         "400":
-          description: Bad Request
+          description: Bad request due to invalid input or other issues
           schema:
             $ref: '#/definitions/utils.FailedResponse'
         "404":
-          description: Not Found
+          description: Session not found
           schema:
             $ref: '#/definitions/utils.FailedResponse'
         "500":
-          description: Internal Server Error
+          description: Internal server error
           schema:
             $ref: '#/definitions/utils.BasicResponse'
       security:
       - Bearer: []
-      summary: RevokeSession user
+      summary: Revoke a user session
       tags:
       - Sessions
   /sessions/{session_id}/user_tokens/{user_id}/:
@@ -1054,9 +1046,9 @@ paths:
     post:
       consumes:
       - application/json
-      description: VerifySession user
+      description: Verifies the validity of a user session by its session ID.
       parameters:
-      - description: session_id
+      - description: Session ID
         in: path
         name: session_id
         required: true
@@ -1065,24 +1057,24 @@ paths:
       - application/json
       responses:
         "200":
-          description: OK
+          description: Session verified successfully
           schema:
             $ref: '#/definitions/utils.SuccessResponse'
         "400":
-          description: Bad Request
+          description: Bad request due to invalid input or other issues
           schema:
             $ref: '#/definitions/utils.FailedResponse'
         "404":
-          description: Not Found
+          description: Session not found
           schema:
             $ref: '#/definitions/utils.FailedResponse'
         "500":
-          description: Internal Server Error
+          description: Internal server error
           schema:
             $ref: '#/definitions/utils.BasicResponse'
       security:
-      - Bearer: []
-      summary: VerifySession user
+      - TenantHeader: []
+      summary: Verify a user session
       tags:
       - Sessions
   /sessions/user_tokens/{user_id}/:
@@ -1119,6 +1111,43 @@ paths:
       security:
       - TenantHeader: []
       summary: Retrieve token for user
+      tags:
+      - Sessions
+  /sessions/verify_tokens/:
+    post:
+      consumes:
+      - application/json
+      description: Verifies the validity of a token for user sessions. This endpoint
+        requires the `TemplateSlug` header which can be either empty or non-empty.
+      parameters:
+      - description: Token to be verified
+        in: path
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Token is valid
+          schema:
+            $ref: '#/definitions/utils.SuccessResponse'
+        "400":
+          description: Invalid token or other issues
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "404":
+          description: Token not found
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/utils.BasicResponse'
+      security:
+      - TenantHeader: []
+      - TemplateSlug: []
+      summary: VerifyTokens for user sessions
       tags:
       - Sessions
   /sign_in_tokens/:
