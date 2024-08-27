@@ -1,0 +1,1348 @@
+basePath: /api/v1/
+definitions:
+  dto.AuthorizeReq:
+    properties:
+      codename:
+        description: Codename string `json:"codename" validate:"required"`
+        type: string
+      groups:
+        items:
+          type: integer
+        type: array
+      user_id:
+        type: integer
+    type: object
+  dto.GoogleAuthenticator:
+    properties:
+      auth_type:
+        description: |-
+          AuthType indicates the type of authentication (e.g., 'email', 'sms', 'auth_code').
+          required: true
+          example: "auth_code"
+        type: string
+      code:
+        description: |-
+          Code is the 2FA code provided by the user.
+          required: true
+          example: "123456"
+        type: string
+      user_id:
+        description: |-
+          UserID represents the ID of the user for whom the 2FA is being validated.
+          required: true
+          example: 123
+        type: integer
+    required:
+    - auth_type
+    - code
+    type: object
+  dto.GroupSchamas:
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+  dto.LoginAuth:
+    properties:
+      password:
+        description: |-
+          Password is the password of the user
+          required: true
+          example: abc@123X
+        type: string
+      username:
+        description: |-
+          Username is the email address of the user
+          required: true
+          example: leomessi305@gmail.com
+        type: string
+    required:
+    - password
+    - username
+    type: object
+  dto.RecoveryCodeDto:
+    properties:
+      auth_type:
+        description: |-
+          AuthType indicates the type of authentication (e.g., email, SMS).
+          required: true
+          example: 1."email" 2."sms" 3."auth_code"
+        type: string
+      code:
+        description: |-
+          Code is the verification code provided by the user.
+          required: true
+          example: "123456"
+        type: string
+      email:
+        description: |-
+          EmailOrPhone is the email or phone number to which the verification code was sent.
+          required: true
+          maxLength: 255
+          example: "user@example.com"
+        maxLength: 255
+        type: string
+    required:
+    - auth_type
+    - code
+    - email
+    type: object
+  dto.ResetPassUser:
+    properties:
+      new_password:
+        description: |-
+          NewPassword is the new password that the user wants to set.
+          required: true
+          minLength: 6
+          maxLength: 128
+          example: "NewPassword123!"
+        maxLength: 128
+        minLength: 6
+        type: string
+      new_password_confirm:
+        description: |-
+          NewPasswordConfirm is the confirmation of the new password.
+          required: true
+          must be equal to NewPassword
+          example: "NewPassword123!"
+        type: string
+    required:
+    - new_password
+    type: object
+  dto.SignupUser:
+    properties:
+      email:
+        description: |-
+          Email is the user's email address.
+          required: true
+          maxLength: 255
+          example: "user@example.com"
+        maxLength: 255
+        type: string
+      first_name:
+        description: |-
+          FirstName is the user's first name.
+          maxLength: 255
+          example: "John"
+        maxLength: 255
+        type: string
+      last_name:
+        description: |-
+          LastName is the user's last name.
+          maxLength: 255
+          example: "Doe"
+        maxLength: 255
+        type: string
+      password:
+        description: |-
+          Password is the user's password.
+          required: true
+          minLength: 6
+          maxLength: 32
+          example: "P@ssw0rd123"
+        maxLength: 32
+        minLength: 6
+        type: string
+      password_confirm:
+        description: |-
+          PasswordConfirm is the confirmation of the user's password.
+          required: true
+          must match the Password field
+          example: "P@ssw0rd123"
+        type: string
+    required:
+    - email
+    - password
+    - password_confirm
+    type: object
+  dto.SocialLoginBody:
+    properties:
+      provider_access_token:
+        description: |-
+          ProviderAccessToken is the provider token of client
+          required: true
+          example: "eyKaaasd...."
+        type: string
+      provider_code:
+        description: |-
+          ProviderAccessToken is the provider code of client
+          required: true
+          example: "elKaaasd...."
+        type: string
+      provider_name:
+        description: |-
+          ProviderName is the provider name of client
+          required: true
+          example: google
+        type: string
+    required:
+    - provider_name
+    type: object
+  dto.TokenInfomation:
+    properties:
+      expired_at:
+        type: string
+      session_id:
+        type: string
+      session_name:
+        type: string
+      session_token:
+        type: string
+    type: object
+  dto.TwoFASetting:
+    properties:
+      auth_type:
+        description: |-
+          AuthType indicates the type of authentication (e.g., email, SMS).
+          required: true
+          example: 1."email" 2."sms" 3."auth_code"
+        type: string
+    required:
+    - auth_type
+    type: object
+  dto.UpdatePassUser:
+    properties:
+      new_password:
+        description: |-
+          NewPassword is the new password that the user wants to set.
+          required: true
+          minLength: 6
+          maxLength: 128
+          example: "NewPassword123!"
+        maxLength: 128
+        minLength: 6
+        type: string
+      new_password_confirm:
+        description: |-
+          NewPasswordConfirm is the confirmation of the new password.
+          required: true
+          must be equal to NewPassword
+          example: "NewPassword123!"
+        type: string
+      old_password:
+        description: |-
+          OldPassword is the current password of the user.
+          required: true
+          minLength: 6
+          maxLength: 128
+          example: "OldPassword123!"
+        maxLength: 128
+        minLength: 6
+        type: string
+    required:
+    - new_password
+    - old_password
+    type: object
+  dto.UpdateUser:
+    properties:
+      additional_information:
+        additionalProperties: true
+        description: |-
+          AdditionalInformation contains extra user details in a flexible format
+          example: {"address1": "123 Main St", "city": "New York"}
+        type: object
+      first_name:
+        description: |-
+          FirstName is the user's first name
+          example: "John"
+        type: string
+      last_name:
+        description: |-
+          LastName is the user's last name
+          example: "Doe"
+        type: string
+      second_factor_type:
+        description: |-
+          SecondFactorType is the user's second factor type
+          example: "sms, email, auth_code, none"
+        type: string
+    type: object
+  dto.UserInfo:
+    properties:
+      additional_information:
+        additionalProperties: true
+        type: object
+      created_at:
+        type: string
+      email:
+        type: string
+      first_name:
+        type: string
+      groups:
+        items:
+          $ref: '#/definitions/dto.GroupSchamas'
+        type: array
+      id:
+        type: integer
+      last_ip_sign_in:
+        type: string
+      last_login:
+        type: string
+      last_name:
+        type: string
+      number_of_logins:
+        type: integer
+      second_factor_type:
+        type: string
+      updated_at:
+        type: string
+      username:
+        type: string
+    type: object
+  dto.UserInfoFoward:
+    properties:
+      token:
+        allOf:
+        - $ref: '#/definitions/dto.TokenInfomation'
+        description: Authentication token information
+      user:
+        allOf:
+        - $ref: '#/definitions/dto.UserInfo'
+        description: User information
+    type: object
+  dto.VerificationBase:
+    properties:
+      auth_type:
+        description: |-
+          AuthType indicates the type of authentication (e.g., email, SMS).
+          required: true
+          example: 1."email" 2."sms" 3."auth_code"
+        type: string
+      code:
+        description: |-
+          Code is the verification code provided by the user.
+          example: "123456"
+        type: string
+      email_or_phone:
+        description: |-
+          EmailOrPhone is the email or phone number to which the verification code was sent.
+          required: true
+          maxLength: 255
+          example: "user@example.com"
+        maxLength: 255
+        type: string
+    required:
+    - auth_type
+    - email_or_phone
+    type: object
+  utils.BasicResponse:
+    properties:
+      code:
+        description: HTTP status code.
+        example: 500
+        type: integer
+      data: {}
+      error:
+        description: Error message.
+        example: '{$err}'
+        type: string
+      message:
+        description: Message corresponding to the status code.
+        example: internal_server_error
+        type: string
+    type: object
+  utils.FailedResponse:
+    properties:
+      code:
+        description: HTTP status code.
+        example: 400
+        type: integer
+      error:
+        description: Error message.
+        example: '{$err}'
+        type: string
+      message:
+        description: Message corresponding to the status code.
+        example: bad_request
+        type: string
+    type: object
+  utils.SuccessResponse:
+    properties:
+      code:
+        description: HTTP status code.
+        example: 200
+        type: integer
+      data:
+        description: data payload.
+      message:
+        example: success
+        type: string
+    type: object
+host: 127.0.0.1:5000
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: This is a documents for OneAuxilia API.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Documents OneAuxilia API
+  version: "1.0"
+paths:
+  /{session_id}/refresh_tokens/:
+    post:
+      consumes:
+      - application/json
+      description: This endpoint refreshes the session token using the provided session
+        ID. Requires `Tenant-Header` for authorization.
+      parameters:
+      - description: Session ID to refresh
+        in: path
+        name: session_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful token refresh response
+          schema:
+            $ref: '#/definitions/utils.SuccessResponse'
+        "400":
+          description: Bad request due to validation errors or other issues
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "404":
+          description: Not found, such as if the session does not exist
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/utils.BasicResponse'
+      security:
+      - TenantHeader: []
+      summary: Refresh session token
+      tags:
+      - Sessions
+  /{session_id}/sign_outs/:
+    post:
+      consumes:
+      - application/json
+      description: This endpoint logs out a user by invalidating their session. Requires
+        a “Tenant-Header“ for authorization.
+      parameters:
+      - description: Session ID to be logged out
+        in: path
+        name: session_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful logout response
+          schema:
+            $ref: '#/definitions/utils.SuccessResponse'
+        "400":
+          description: Bad request due to validation errors or other issues
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "404":
+          description: Not found, such as if the session does not exist
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/utils.BasicResponse'
+      security:
+      - TenantHeader: []
+      summary: Log out a user session
+      tags:
+      - SignOuts
+  /auth/regenerate_recovery_codes/:
+    post:
+      consumes:
+      - application/json
+      description: Generates a new recovery code for account recovery or authentication
+        purposes.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: New recovery code successfully generated
+          schema:
+            $ref: '#/definitions/utils.SuccessResponse'
+        "400":
+          description: Invalid request or error generating new recovery code
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "404":
+          description: User not found or account issue
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/utils.BasicResponse'
+      summary: Regenerate Recovery Code
+      tags:
+      - Authenticators
+  /auth/update_secret_key/{user_id}/:
+    put:
+      consumes:
+      - application/json
+      description: Updates the two-factor authentication (2FA) secret key associated
+        with the provided email address.
+      parameters:
+      - description: User Email Address
+        in: path
+        name: user_id
+        required: true
+        type: string
+      - description: TwoFASetting Request Body
+        in: body
+        name: TwoFASetting
+        required: true
+        schema:
+          $ref: '#/definitions/dto.TwoFASetting'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful response indicating the 2FA secret key was updated
+          schema:
+            $ref: '#/definitions/utils.SuccessResponse'
+        "400":
+          description: Bad request due to invalid input or other issues
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "404":
+          description: Not found if the email is not found
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/utils.BasicResponse'
+      summary: Update seconds factor Secret Key
+      tags:
+      - Authenticators
+  /auth/valid_recovery_codes/:
+    post:
+      consumes:
+      - application/json
+      description: Validates a recovery code used for user authentication or account
+        recovery.
+      parameters:
+      - description: RecoveryCodeDto
+        in: body
+        name: RecoveryCodeDto
+        required: true
+        schema:
+          $ref: '#/definitions/dto.RecoveryCodeDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful validation of the recovery code
+          schema:
+            $ref: '#/definitions/utils.SuccessResponse'
+        "400":
+          description: Invalid request or recovery code
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "404":
+          description: Recovery code not found or user not found
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/utils.BasicResponse'
+      summary: Validate Recovery Code
+      tags:
+      - Authenticators
+  /auth/validate/:
+    post:
+      consumes:
+      - application/json
+      description: Validates the provided two-factor authentication (2FA) credentials
+        for an existing user.
+      parameters:
+      - description: GoogleAuthenticator Request Body
+        in: body
+        name: GoogleAuthenticator
+        required: true
+        schema:
+          $ref: '#/definitions/dto.GoogleAuthenticator'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful response indicating 2FA validation
+          schema:
+            $ref: '#/definitions/utils.SuccessResponse'
+        "400":
+          description: Bad request due to invalid input or other issues
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "404":
+          description: Not found if the user or 2FA setup is not found
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/utils.BasicResponse'
+      summary: Validate seconds factor Credentials
+      tags:
+      - Authenticators
+  /auth/validate/sign_ins/:
+    post:
+      consumes:
+      - application/json
+      description: Validates the provided two-factor authentication (2FA) credentials
+        for an existing user.
+      parameters:
+      - description: GoogleAuthenticator Request Body
+        in: body
+        name: GoogleAuthenticator
+        required: true
+        schema:
+          $ref: '#/definitions/dto.GoogleAuthenticator'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful response indicating 2FA validation
+          schema:
+            $ref: '#/definitions/dto.UserInfoFoward'
+        "400":
+          description: Bad request due to invalid input or other issues
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "404":
+          description: Not found if the user or 2FA setup is not found
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/utils.BasicResponse'
+      summary: Validate Two-Factor Authentication Credentials
+      tags:
+      - Authenticators
+  /authorized/:
+    post:
+      consumes:
+      - application/json
+      description: Handles user authorization by validating the provided credentials
+        or tokens.
+      parameters:
+      - description: Authorize Request Body
+        in: body
+        name: Authorize
+        required: true
+        schema:
+          $ref: '#/definitions/dto.AuthorizeReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful authorization response
+          schema:
+            $ref: '#/definitions/utils.SuccessResponse'
+        "400":
+          description: Bad request due to invalid input or other issues
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "404":
+          description: Not found if the user or resource is not found
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/utils.BasicResponse'
+      security:
+      - Bearer: []
+      summary: Authorize User
+      tags:
+      - Authorize
+  /environment/:
+    post:
+      consumes:
+      - application/json
+      description: Retrieves and loads all configuration settings for the environment.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Configuration settings loaded successfully
+          schema:
+            $ref: '#/definitions/utils.SuccessResponse'
+        "400":
+          description: Bad request due to invalid input or other issues
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "404":
+          description: Configuration settings not found
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/utils.BasicResponse'
+      summary: Load all configuration settings
+      tags:
+      - Environment
+  /generate/:
+    post:
+      consumes:
+      - application/json
+      description: Generates and sends a verification code to the user's email address
+        based on the provided details.
+      parameters:
+      - description: VerificationBase Request Body
+        in: body
+        name: VerificationBase
+        required: true
+        schema:
+          $ref: '#/definitions/dto.VerificationBase'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful response indicating the code was sent
+          schema:
+            $ref: '#/definitions/utils.SuccessResponse'
+        "400":
+          description: Bad request due to invalid input or other issues
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "404":
+          description: Not found if the email or resource is not found
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/utils.BasicResponse'
+      summary: Generate Code By Mail
+      tags:
+      - Authenticators
+  /members/change_password/:
+    put:
+      consumes:
+      - application/json
+      description: This endpoint allows users to change their password. It requires
+        Bearer authentication and a `Tenant-Header` for authorization.
+      parameters:
+      - description: User password update details
+        in: body
+        name: UpdatePassUser
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpdatePassUser'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful password change response
+          schema:
+            $ref: '#/definitions/utils.SuccessResponse'
+        "400":
+          description: Bad request due to validation errors or other issues
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "404":
+          description: Not found, such as if the user does not exist
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/utils.BasicResponse'
+      security:
+      - Bearer: []
+      - TenantHeader: []
+      summary: Change user password
+      tags:
+      - Members
+  /members/reset_password/:
+    put:
+      consumes:
+      - application/json
+      description: This endpoint allows users to reset their password. It requires
+        Bearer authentication and a `Tenant-Header` for authorization.
+      parameters:
+      - description: User password reset details
+        in: body
+        name: ResetPassUser
+        required: true
+        schema:
+          $ref: '#/definitions/dto.ResetPassUser'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful password reset response
+          schema:
+            $ref: '#/definitions/utils.SuccessResponse'
+        "400":
+          description: Bad request due to validation errors or other issues
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "404":
+          description: Not found, such as if the user does not exist
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/utils.BasicResponse'
+      security:
+      - Bearer: []
+      - TenantHeader: []
+      summary: Reset user password
+      tags:
+      - Members
+  /members/revoke/:
+    put:
+      consumes:
+      - application/json
+      description: This endpoint revokes a user account. It requires both Bearer authentication
+        and a `Tenant-Header` for authorization.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful account revocation response
+          schema:
+            $ref: '#/definitions/utils.SuccessResponse'
+        "400":
+          description: Bad request due to validation errors or other issues
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "404":
+          description: Not found, such as if the account does not exist
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/utils.BasicResponse'
+      security:
+      - Bearer: []
+      - TenantHeader: []
+      summary: Revoke a user account
+      tags:
+      - Members
+  /members/update_profiles/:
+    put:
+      consumes:
+      - application/json
+      description: This endpoint allows users to update their profile information.
+        It requires Bearer authentication and a `Tenant-Header` for authorization.
+      parameters:
+      - description: User profile update details
+        in: body
+        name: UpdateUser
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpdateUser'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful profile update response
+          schema:
+            $ref: '#/definitions/utils.SuccessResponse'
+        "400":
+          description: Bad request due to validation errors or other issues
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "404":
+          description: Not found, such as if the user does not exist
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/utils.BasicResponse'
+      security:
+      - Bearer: []
+      - TenantHeader: []
+      summary: Update user profile
+      tags:
+      - Members
+  /members/view_profiles/:
+    get:
+      consumes:
+      - application/json
+      description: This endpoint retrieves the profile information of the currently
+        authenticated user. It requires Bearer authentication and a `Tenant-Header`
+        for authorization.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: User profile information
+          schema:
+            $ref: '#/definitions/dto.UserInfo'
+        "400":
+          description: Bad request due to validation errors or other issues
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "404":
+          description: Not found, such as if the user does not exist
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/utils.BasicResponse'
+      security:
+      - Bearer: []
+      - TenantHeader: []
+      summary: Get user profile
+      tags:
+      - Members
+  /permissions/:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves a list of available permissions for users in the system.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful response containing permissions list
+          schema:
+            $ref: '#/definitions/utils.SuccessResponse'
+        "400":
+          description: Bad request due to invalid input or other issues
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "404":
+          description: Not found, if no permissions are available
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/utils.BasicResponse'
+      summary: Get Permissions for Users
+      tags:
+      - Roles
+  /sessions/:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves the details of the current user session.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Session details retrieved successfully
+          schema:
+            $ref: '#/definitions/utils.SuccessResponse'
+        "400":
+          description: Bad request due to invalid input or other issues
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "404":
+          description: Session not found
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/utils.BasicResponse'
+      security:
+      - Bearer: []
+      - TenantHeader: []
+      summary: Get user session details
+      tags:
+      - Sessions
+  /sessions/{session_id}/revoke/:
+    post:
+      consumes:
+      - application/json
+      description: Revokes a user session by its session ID, effectively logging the
+        user out.
+      parameters:
+      - description: Session ID
+        in: path
+        name: session_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Session revoked successfully
+          schema:
+            $ref: '#/definitions/utils.SuccessResponse'
+        "400":
+          description: Bad request due to invalid input or other issues
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "404":
+          description: Session not found
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/utils.BasicResponse'
+      security:
+      - Bearer: []
+      summary: Revoke a user session
+      tags:
+      - Sessions
+  /sessions/{session_id}/user_tokens/{user_id}/:
+    post:
+      consumes:
+      - application/json
+      description: This endpoint retrieves a session token for a specific user using
+        their user ID and session ID, with additional template slug validation. Requires
+        Bearer token, “Tenant-Header“, and TemplateSlug for authorization.
+      parameters:
+      - description: User ID for which to retrieve the token
+        in: path
+        name: user_id
+        required: true
+        type: integer
+      - description: Session ID associated with the token retrieval
+        in: path
+        name: session_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful token retrieval response
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad request due to validation errors or other issues
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "404":
+          description: Not found, such as if the user or session does not exist
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/utils.BasicResponse'
+      security:
+      - Bearer: []
+      - TenantHeader: []
+      - TemplateSlug: []
+      summary: Retrieve token with template
+      tags:
+      - Sessions
+  /sessions/{session_id}/verify/:
+    post:
+      consumes:
+      - application/json
+      description: Verifies the validity of a user session by its session ID.
+      parameters:
+      - description: Session ID
+        in: path
+        name: session_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Session verified successfully
+          schema:
+            $ref: '#/definitions/utils.SuccessResponse'
+        "400":
+          description: Bad request due to invalid input or other issues
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "404":
+          description: Session not found
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/utils.BasicResponse'
+      security:
+      - TenantHeader: []
+      summary: Verify a user session
+      tags:
+      - Sessions
+  /sessions/user_tokens/{user_id}/:
+    post:
+      consumes:
+      - application/json
+      description: This endpoint retrieves a session token for a specific user using
+        their user ID. Requires “Tenant-Header“ for authorization.
+      parameters:
+      - description: User ID for which to retrieve the token
+        in: path
+        name: user_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful token retrieval response
+          schema:
+            $ref: '#/definitions/dto.UserInfoFoward'
+        "400":
+          description: Bad request due to validation errors or other issues
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "404":
+          description: Not found, such as if the user does not exist
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/utils.BasicResponse'
+      security:
+      - TenantHeader: []
+      summary: Retrieve token for user
+      tags:
+      - Sessions
+  /sessions/verify_tokens/:
+    post:
+      consumes:
+      - application/json
+      description: Verifies the validity of a token for user sessions. This endpoint
+        requires the `TemplateSlug` header which can be either empty or non-empty.
+      parameters:
+      - description: Token to be verified
+        in: path
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Token is valid
+          schema:
+            $ref: '#/definitions/utils.SuccessResponse'
+        "400":
+          description: Invalid token or other issues
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "404":
+          description: Token not found
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/utils.BasicResponse'
+      security:
+      - TenantHeader: []
+      - TemplateSlug: []
+      summary: VerifyTokens for user sessions
+      tags:
+      - Sessions
+  /sign_in_tokens/:
+    post:
+      consumes:
+      - application/json
+      description: This endpoint allows superadmin users to log in by providing their
+        credentials. It requires the `Tenant-Header` for authorization.
+      parameters:
+      - description: Login credentials for superadmin
+        in: body
+        name: UserLogin
+        required: true
+        schema:
+          $ref: '#/definitions/dto.LoginAuth'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful login response containing user info and token
+          schema:
+            $ref: '#/definitions/dto.UserInfoFoward'
+        "400":
+          description: Invalid request or login credentials
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "404":
+          description: User not found
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/utils.BasicResponse'
+      security:
+      - TenantHeader: []
+      summary: Signin for accounts
+      tags:
+      - SignInTokens
+  /sign_in_tokens/{sign_in_token_id}/:
+    post:
+      consumes:
+      - application/json
+      description: This endpoint revokes a specific sign-in token, invalidating it
+        and preventing further use.
+      parameters:
+      - description: The ID of the sign-in token to revoke
+        in: path
+        name: sign_in_token_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful revocation response
+          schema:
+            $ref: '#/definitions/utils.SuccessResponse'
+        "400":
+          description: Invalid request or token ID
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "404":
+          description: Token not found
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/utils.BasicResponse'
+      security:
+      - TenantHeader: []
+      summary: Revoke a sign-in token
+      tags:
+      - SignInTokens
+  /sign_in_tokens/social/:
+    post:
+      consumes:
+      - application/json
+      description: This endpoint allows users to log in using their social credentials
+        (e.g., Google, Facebook).
+      parameters:
+      - description: Social Login Credentials
+        in: body
+        name: SocailLogin
+        required: true
+        schema:
+          $ref: '#/definitions/dto.SocialLoginBody'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful login response
+          schema:
+            $ref: '#/definitions/dto.UserInfoFoward'
+        "400":
+          description: Invalid input or authentication error
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "404":
+          description: Resource not found
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/utils.BasicResponse'
+      security:
+      - TenantHeader: []
+      summary: Login using social credentials
+      tags:
+      - SignInTokens
+  /signup/:
+    post:
+      consumes:
+      - application/json
+      description: This endpoint allows for the creation of a new user account. The
+        request requires a `Tenant-Header` for authentication.
+      parameters:
+      - description: User signup details
+        in: body
+        name: SignupUser
+        required: true
+        schema:
+          $ref: '#/definitions/dto.SignupUser'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful signup response
+          schema:
+            $ref: '#/definitions/utils.SuccessResponse'
+        "400":
+          description: Bad request due to validation errors or other issues
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "404":
+          description: Not found, such as if the user already exists
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/utils.BasicResponse'
+      security:
+      - TenantHeader: []
+      summary: Sign up a new user account
+      tags:
+      - Members
+  /verify/:
+    post:
+      consumes:
+      - application/json
+      description: Verifies the code sent to the user's email address. If the code
+        is valid and matches, the verification is successful.
+      parameters:
+      - description: VerificationBase Request Body
+        in: body
+        name: VerificationBase
+        required: true
+        schema:
+          $ref: '#/definitions/dto.VerificationBase'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful response indicating the code verification was successful
+          schema:
+            $ref: '#/definitions/dto.UserInfoFoward'
+        "400":
+          description: Bad request due to invalid input or other issues
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "404":
+          description: Not found if the email or code is not found
+          schema:
+            $ref: '#/definitions/utils.FailedResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/utils.BasicResponse'
+      summary: Verify Code By Mail
+      tags:
+      - Authenticators
+securityDefinitions:
+  Bearer:
+    in: header
+    name: Authorization
+    type: apiKey
+  TemplateSlug:
+    in: header
+    name: Template-Slug
+    type: apiKey
+  TenantHeader:
+    in: header
+    name: Tenant-Header
+    type: apiKey
+swagger: "2.0"
