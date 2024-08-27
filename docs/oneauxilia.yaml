@@ -1,31 +1,5 @@
 basePath: /api/v1/
 definitions:
-  dto.ApiKeyConf:
-    properties:
-      jwt_private_key:
-        type: string
-      jwt_public_key:
-        type: string
-      public_key:
-        type: string
-      secret_keys:
-        items:
-          $ref: '#/definitions/dto.SecretKeyConf'
-        type: array
-    type: object
-  dto.AuthenticationSetting:
-    properties:
-      email_verification_code:
-        $ref: '#/definitions/dto.BaseSetting'
-      email_verification_link:
-        $ref: '#/definitions/dto.BaseSetting'
-      passkey:
-        $ref: '#/definitions/dto.BaseSetting'
-      password:
-        $ref: '#/definitions/dto.BaseSetting'
-      sms_verification_code:
-        $ref: '#/definitions/dto.BaseSetting'
-    type: object
   dto.BackupCodeDto:
     properties:
       backup_code:
@@ -36,22 +10,6 @@ definitions:
         type: string
     required:
     - backup_code
-    type: object
-  dto.BaseSetting:
-    properties:
-      is_enable:
-        type: boolean
-      priority:
-        type: integer
-      setting:
-        $ref: '#/definitions/dto.SettingValue'
-    type: object
-  dto.ContactSetting:
-    properties:
-      email:
-        $ref: '#/definitions/dto.BaseSetting'
-      phone_number:
-        $ref: '#/definitions/dto.BaseSetting'
     type: object
   dto.CreateUser:
     properties:
@@ -106,92 +64,39 @@ definitions:
       name:
         type: string
     type: object
-  dto.JWTConfig:
-    properties:
-      access_token_lifetime:
-        type: integer
-      auth_header_name:
-        type: string
-      auth_header_type:
-        type: string
-      claim:
-        type: string
-      is_rotate_refresh_token:
-        type: boolean
-      issuer:
-        type: string
-      refresh_token_lifetime:
-        type: integer
-      signing_algorithm:
-        type: string
-      signing_private_key:
-        type: string
-      signing_public_key:
-        type: string
-    type: object
-  dto.MultiFactorProvider:
-    properties:
-      is_enable:
-        type: boolean
-      name:
-        type: string
-      order:
-        type: integer
-      type:
-        type: string
-    type: object
-  dto.MultiFactorSetting:
-    properties:
-      methods:
-        items:
-          $ref: '#/definitions/dto.MultiFactorProvider'
-        type: array
-    type: object
   dto.OrganizationRequest:
     properties:
       avatar:
         description: |-
-          Avatar is the user's avatar.
+          Avatar is the URL of the organization's avatar image.
           required: false
-          example: "https://sgp1.vultrobjects.com/oneauxilia-homepage-image/images/f1d004ce-7390-468f-84f8-1162a7e7d987"
+          example: "https://example.com/avatar.png"
         type: string
       display_name:
         description: |-
-          DisplayName is the organization's displayname.
+          DisplayName is the display name of the organization.
           required: true
           maxLength: 255
-          example: "organization test"
+          example: "Organization Test"
+        maxLength: 255
         type: string
       name:
         description: |-
-          Name is the organization's name.
+          Name is the name of the organization.
           required: true
           maxLength: 255
-          example: "organization test"
+          example: "Organization Test"
         maxLength: 255
         type: string
       owner_id:
         description: |-
-          OwnerID is the user owner of the organization.
+          OwnerID is the ID of the user who owns the organization.
           required: false
           example: 123
         type: integer
     required:
+    - display_name
     - name
-    type: object
-  dto.PagingSchema:
-    properties:
-      page:
-        type: integer
-      perPage:
-        type: integer
-    type: object
-  dto.PermissionSetting:
-    type: object
-  dto.PersonalSetting:
-    properties:
-      name:
-        $ref: '#/definitions/dto.BaseSetting'
     type: object
   dto.ResetPassUser:
     properties:
@@ -215,74 +120,14 @@ definitions:
     required:
     - new_password
     type: object
-  dto.SecretKeyConf:
-    properties:
-      name:
-        type: string
-      slug:
-        type: string
-      value:
-        type: string
-    type: object
-  dto.SessionConf:
-    properties:
-      claim:
-        type: string
-      interactive_layout:
-        type: integer
-      interactive_layout_unit:
-        type: string
-      is_enable_interactive_layout:
-        type: boolean
-      is_enable_maximum_lifetime:
-        type: boolean
-      maximum_lifetime:
-        type: integer
-      name:
-        type: string
-    type: object
-  dto.SessionSetting:
-    properties:
-      api_key:
-        $ref: '#/definitions/dto.ApiKeyConf'
-      expiresIn:
-        type: integer
-      session:
-        $ref: '#/definitions/dto.SessionConf'
-    type: object
-  dto.SettingValue:
-    additionalProperties: true
-    type: object
   dto.SignInToken:
     properties:
-      application_id:
-        type: string
-      code:
-        type: string
-      domain:
-        type: string
       expires_in_seconds:
         description: |-
           Default: 2592000
           Optional parameter to specify the life duration of the sign in token in seconds. By default, the duration is 30 days.
           example: 2592000
         type: integer
-      id:
-        type: string
-      is_deleted:
-        type: boolean
-      jwt_config:
-        $ref: '#/definitions/dto.JWTConfig'
-      mode:
-        type: integer
-      schema_name:
-        type: string
-      session:
-        $ref: '#/definitions/dto.SessionSetting'
-      social_connections:
-        $ref: '#/definitions/dto.SocialSetting'
-      user_general_setting:
-        $ref: '#/definitions/dto.UserSetting'
       user_id:
         description: |-
           The ID of the user that can use the newly created sign in token
@@ -291,44 +136,6 @@ definitions:
         type: integer
     required:
     - user_id
-    type: object
-  dto.SocialProvider:
-    properties:
-      auth_provider:
-        type: string
-      is_enable:
-        type: boolean
-      order:
-        type: integer
-      setting:
-        $ref: '#/definitions/dto.SocialProviderSetting'
-    type: object
-  dto.SocialProviderSetting:
-    properties:
-      client_id:
-        type: string
-      client_secret:
-        type: string
-      directory_id:
-        type: string
-      is_allow:
-        type: boolean
-      is_block_sub_addresses:
-        type: boolean
-      is_use_custom_credential:
-        type: boolean
-      redirect_uri:
-        type: string
-      scopes:
-        items:
-          type: string
-        type: array
-    type: object
-  dto.SocialSetting:
-    additionalProperties:
-      items:
-        $ref: '#/definitions/dto.SocialProvider'
-      type: array
     type: object
   dto.TemplateUser:
     properties:
@@ -512,25 +319,15 @@ definitions:
         - $ref: '#/definitions/dto.UserInfo'
         description: User information
     type: object
-  dto.UserSetting:
+  dto.VerifyPassword:
     properties:
-      authentication_strategies:
-        $ref: '#/definitions/dto.AuthenticationSetting'
-      contact:
-        $ref: '#/definitions/dto.ContactSetting'
-      multi_factors:
-        $ref: '#/definitions/dto.MultiFactorSetting'
-      perrmission:
-        $ref: '#/definitions/dto.PermissionSetting'
-      personal:
-        $ref: '#/definitions/dto.PersonalSetting'
-      username:
-        $ref: '#/definitions/dto.UsernameSetting'
-    type: object
-  dto.UsernameSetting:
-    properties:
-      username:
-        $ref: '#/definitions/dto.BaseSetting'
+      password:
+        description: |-
+          The user password to verify.
+          example: "abc@123X"
+        type: string
+    required:
+    - password
     type: object
   model.Member:
     properties:
@@ -622,6 +419,25 @@ definitions:
         example: bad_request
         type: string
     type: object
+  utils.Paginator:
+    properties:
+      count:
+        example: 100
+        type: integer
+      data: {}
+      has_next:
+        example: true
+        type: boolean
+      has_previous:
+        example: false
+        type: boolean
+      page_num:
+        example: 1
+        type: integer
+      page_size:
+        example: 10
+        type: integer
+    type: object
   utils.SuccessResponse:
     properties:
       code:
@@ -661,13 +477,19 @@ paths:
           Accepts up to 100 user ids. Any user ids not found are ignored.
           example: 234
         in: query
-        name: ownerID
+        name: owner_id
         type: integer
-      - in: query
-        name: page
+      - description: |-
+          The page number to retrieve. Defaults to 1 if not specified.
+          example: 1
+        in: query
+        name: page_num
         type: integer
-      - in: query
-        name: perPage
+      - description: |-
+          The number of items per page. Defaults to 10 if not specified.
+          example: 10
+        in: query
+        name: page_size
         type: integer
       - description: |-
           Returns organizations with ID, name, or slug that match the given query. Uses exact match for organization ID and partial match for name and slug.
@@ -681,9 +503,7 @@ paths:
         "200":
           description: List of all organizational instances
           schema:
-            items:
-              $ref: '#/definitions/dto.PagingSchema'
-            type: array
+            $ref: '#/definitions/utils.Paginator'
         "400":
           description: Bad request due to invalid input or other issues
           schema:
@@ -1076,32 +896,38 @@ paths:
       description: This endpoint allows superadmin users to retrieve a list of all
         users in the system.
       parameters:
-      - in: query
-        name: page
-        type: integer
-      - in: query
-        name: perPage
+      - description: |-
+          The page number to retrieve. Defaults to 1 if not specified.
+          example: 1
+        in: query
+        name: page_num
         type: integer
       - description: |-
-          String
+          The number of items per page. Defaults to 10 if not specified.
+          example: 10
+        in: query
+        name: page_size
+        type: integer
+      - description: |-
           Returns users with the specified phone numbers. Accepts up to 100 phone numbers. Any phone numbers not found are ignored.
           example: user_amkHacjkasdpoqe
         in: query
-        name: phoneNumber
+        name: phone_number
         type: string
-      - in: query
+      - description: Returns users matching the search term. This can be used for
+          partial matches on user attributes.
+        in: query
         name: search
         type: string
       - description: |-
-          Returns users with the user ids specified. For each user id, the + and - can be prepended to the id,
-          which denote whether the respective user id should be included or excluded from the result set.
-          Accepts up to 100 user ids. Any user ids not found are ignored.
-          example: 2592000
+          Returns users with the specified user IDs. The IDs can be either positive or negative, where a positive ID includes the user,
+          and a negative ID excludes the user from the results. Accepts up to 100 user IDs. Any user IDs not found are ignored.
+          example: 2592000, -123456
         in: query
-        name: userId
+        name: user_id
         type: integer
       - description: |-
-          Returns users with the specified usernames. Accepts up to 100 usernames. Any usernames not found are ignored
+          Returns users with the specified usernames. Accepts up to 100 usernames. Any usernames not found are ignored.
           example: user_amkHacjkasdpoqe
         in: query
         name: username
@@ -1112,7 +938,7 @@ paths:
         "200":
           description: Successful response containing a list of users
           schema:
-            $ref: '#/definitions/dto.UserInfoFoward'
+            $ref: '#/definitions/utils.Paginator'
         "400":
           description: Bad request due to invalid query parameters
           schema:
@@ -1489,6 +1315,12 @@ paths:
         name: user_id
         required: true
         type: string
+      - description: VerifyPassword request body containing the necessary credentials
+        in: body
+        name: VerifyPassword
+        required: true
+        schema:
+          $ref: '#/definitions/dto.VerifyPassword'
       produces:
       - application/json
       responses:

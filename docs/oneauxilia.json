@@ -40,17 +40,19 @@
                     {
                         "type": "integer",
                         "description": "Returns users with the user ids specified. For each user id, the + and - can be prepended to the id,\nwhich denote whether the respective user id should be included or excluded from the result set.\nAccepts up to 100 user ids. Any user ids not found are ignored.\nexample: 234",
-                        "name": "ownerID",
+                        "name": "owner_id",
                         "in": "query"
                     },
                     {
                         "type": "integer",
-                        "name": "page",
+                        "description": "The page number to retrieve. Defaults to 1 if not specified.\nexample: 1",
+                        "name": "page_num",
                         "in": "query"
                     },
                     {
                         "type": "integer",
-                        "name": "perPage",
+                        "description": "The number of items per page. Defaults to 10 if not specified.\nexample: 10",
+                        "name": "page_size",
                         "in": "query"
                     },
                     {
@@ -64,10 +66,7 @@
                     "200": {
                         "description": "List of all organizational instances",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/dto.PagingSchema"
-                            }
+                            "$ref": "#/definitions/utils.Paginator"
                         }
                     },
                     "400": {
@@ -673,34 +672,37 @@
                 "parameters": [
                     {
                         "type": "integer",
-                        "name": "page",
+                        "description": "The page number to retrieve. Defaults to 1 if not specified.\nexample: 1",
+                        "name": "page_num",
                         "in": "query"
                     },
                     {
                         "type": "integer",
-                        "name": "perPage",
+                        "description": "The number of items per page. Defaults to 10 if not specified.\nexample: 10",
+                        "name": "page_size",
                         "in": "query"
                     },
                     {
                         "type": "string",
-                        "description": "String\nReturns users with the specified phone numbers. Accepts up to 100 phone numbers. Any phone numbers not found are ignored.\nexample: user_amkHacjkasdpoqe",
-                        "name": "phoneNumber",
+                        "description": "Returns users with the specified phone numbers. Accepts up to 100 phone numbers. Any phone numbers not found are ignored.\nexample: user_amkHacjkasdpoqe",
+                        "name": "phone_number",
                         "in": "query"
                     },
                     {
                         "type": "string",
+                        "description": "Returns users matching the search term. This can be used for partial matches on user attributes.",
                         "name": "search",
                         "in": "query"
                     },
                     {
                         "type": "integer",
-                        "description": "Returns users with the user ids specified. For each user id, the + and - can be prepended to the id,\nwhich denote whether the respective user id should be included or excluded from the result set.\nAccepts up to 100 user ids. Any user ids not found are ignored.\nexample: 2592000",
-                        "name": "userId",
+                        "description": "Returns users with the specified user IDs. The IDs can be either positive or negative, where a positive ID includes the user,\nand a negative ID excludes the user from the results. Accepts up to 100 user IDs. Any user IDs not found are ignored.\nexample: 2592000, -123456",
+                        "name": "user_id",
                         "in": "query"
                     },
                     {
                         "type": "string",
-                        "description": "Returns users with the specified usernames. Accepts up to 100 usernames. Any usernames not found are ignored\nexample: user_amkHacjkasdpoqe",
+                        "description": "Returns users with the specified usernames. Accepts up to 100 usernames. Any usernames not found are ignored.\nexample: user_amkHacjkasdpoqe",
                         "name": "username",
                         "in": "query"
                     }
@@ -709,7 +711,7 @@
                     "200": {
                         "description": "Successful response containing a list of users",
                         "schema": {
-                            "$ref": "#/definitions/dto.UserInfoFoward"
+                            "$ref": "#/definitions/utils.Paginator"
                         }
                     },
                     "400": {
@@ -1456,6 +1458,15 @@
                         "name": "user_id",
                         "in": "path",
                         "required": true
+                    },
+                    {
+                        "description": "VerifyPassword request body containing the necessary credentials",
+                        "name": "VerifyPassword",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.VerifyPassword"
+                        }
                     }
                 ],
                 "responses": {
@@ -1488,46 +1499,6 @@
         }
     },
     "definitions": {
-        "dto.ApiKeyConf": {
-            "type": "object",
-            "properties": {
-                "jwt_private_key": {
-                    "type": "string"
-                },
-                "jwt_public_key": {
-                    "type": "string"
-                },
-                "public_key": {
-                    "type": "string"
-                },
-                "secret_keys": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/dto.SecretKeyConf"
-                    }
-                }
-            }
-        },
-        "dto.AuthenticationSetting": {
-            "type": "object",
-            "properties": {
-                "email_verification_code": {
-                    "$ref": "#/definitions/dto.BaseSetting"
-                },
-                "email_verification_link": {
-                    "$ref": "#/definitions/dto.BaseSetting"
-                },
-                "passkey": {
-                    "$ref": "#/definitions/dto.BaseSetting"
-                },
-                "password": {
-                    "$ref": "#/definitions/dto.BaseSetting"
-                },
-                "sms_verification_code": {
-                    "$ref": "#/definitions/dto.BaseSetting"
-                }
-            }
-        },
         "dto.BackupCodeDto": {
             "type": "object",
             "required": [
@@ -1537,31 +1508,6 @@
                 "backup_code": {
                     "description": "Code is the verification code provided by the user.\nrequired: true\nexample: \"123456\"",
                     "type": "string"
-                }
-            }
-        },
-        "dto.BaseSetting": {
-            "type": "object",
-            "properties": {
-                "is_enable": {
-                    "type": "boolean"
-                },
-                "priority": {
-                    "type": "integer"
-                },
-                "setting": {
-                    "$ref": "#/definitions/dto.SettingValue"
-                }
-            }
-        },
-        "dto.ContactSetting": {
-            "type": "object",
-            "properties": {
-                "email": {
-                    "$ref": "#/definitions/dto.BaseSetting"
-                },
-                "phone_number": {
-                    "$ref": "#/definitions/dto.BaseSetting"
                 }
             }
         },
@@ -1611,113 +1557,30 @@
                 }
             }
         },
-        "dto.JWTConfig": {
-            "type": "object",
-            "properties": {
-                "access_token_lifetime": {
-                    "type": "integer"
-                },
-                "auth_header_name": {
-                    "type": "string"
-                },
-                "auth_header_type": {
-                    "type": "string"
-                },
-                "claim": {
-                    "type": "string"
-                },
-                "is_rotate_refresh_token": {
-                    "type": "boolean"
-                },
-                "issuer": {
-                    "type": "string"
-                },
-                "refresh_token_lifetime": {
-                    "type": "integer"
-                },
-                "signing_algorithm": {
-                    "type": "string"
-                },
-                "signing_private_key": {
-                    "type": "string"
-                },
-                "signing_public_key": {
-                    "type": "string"
-                }
-            }
-        },
-        "dto.MultiFactorProvider": {
-            "type": "object",
-            "properties": {
-                "is_enable": {
-                    "type": "boolean"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "order": {
-                    "type": "integer"
-                },
-                "type": {
-                    "type": "string"
-                }
-            }
-        },
-        "dto.MultiFactorSetting": {
-            "type": "object",
-            "properties": {
-                "methods": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/dto.MultiFactorProvider"
-                    }
-                }
-            }
-        },
         "dto.OrganizationRequest": {
             "type": "object",
             "required": [
+                "display_name",
                 "name"
             ],
             "properties": {
                 "avatar": {
-                    "description": "Avatar is the user's avatar.\nrequired: false\nexample: \"https://sgp1.vultrobjects.com/oneauxilia-homepage-image/images/f1d004ce-7390-468f-84f8-1162a7e7d987\"",
+                    "description": "Avatar is the URL of the organization's avatar image.\nrequired: false\nexample: \"https://example.com/avatar.png\"",
                     "type": "string"
                 },
                 "display_name": {
-                    "description": "DisplayName is the organization's displayname.\nrequired: true\nmaxLength: 255\nexample: \"organization test\"",
-                    "type": "string"
+                    "description": "DisplayName is the display name of the organization.\nrequired: true\nmaxLength: 255\nexample: \"Organization Test\"",
+                    "type": "string",
+                    "maxLength": 255
                 },
                 "name": {
-                    "description": "Name is the organization's name.\nrequired: true\nmaxLength: 255\nexample: \"organization test\"",
+                    "description": "Name is the name of the organization.\nrequired: true\nmaxLength: 255\nexample: \"Organization Test\"",
                     "type": "string",
                     "maxLength": 255
                 },
                 "owner_id": {
-                    "description": "OwnerID is the user owner of the organization.\nrequired: false\nexample: 123",
+                    "description": "OwnerID is the ID of the user who owns the organization.\nrequired: false\nexample: 123",
                     "type": "integer"
-                }
-            }
-        },
-        "dto.PagingSchema": {
-            "type": "object",
-            "properties": {
-                "page": {
-                    "type": "integer"
-                },
-                "perPage": {
-                    "type": "integer"
-                }
-            }
-        },
-        "dto.PermissionSetting": {
-            "type": "object"
-        },
-        "dto.PersonalSetting": {
-            "type": "object",
-            "properties": {
-                "name": {
-                    "$ref": "#/definitions/dto.BaseSetting"
                 }
             }
         },
@@ -1739,168 +1602,19 @@
                 }
             }
         },
-        "dto.SecretKeyConf": {
-            "type": "object",
-            "properties": {
-                "name": {
-                    "type": "string"
-                },
-                "slug": {
-                    "type": "string"
-                },
-                "value": {
-                    "type": "string"
-                }
-            }
-        },
-        "dto.SessionConf": {
-            "type": "object",
-            "properties": {
-                "claim": {
-                    "type": "string"
-                },
-                "interactive_layout": {
-                    "type": "integer"
-                },
-                "interactive_layout_unit": {
-                    "type": "string"
-                },
-                "is_enable_interactive_layout": {
-                    "type": "boolean"
-                },
-                "is_enable_maximum_lifetime": {
-                    "type": "boolean"
-                },
-                "maximum_lifetime": {
-                    "type": "integer"
-                },
-                "name": {
-                    "type": "string"
-                }
-            }
-        },
-        "dto.SessionSetting": {
-            "type": "object",
-            "properties": {
-                "api_key": {
-                    "$ref": "#/definitions/dto.ApiKeyConf"
-                },
-                "expiresIn": {
-                    "type": "integer"
-                },
-                "session": {
-                    "$ref": "#/definitions/dto.SessionConf"
-                }
-            }
-        },
-        "dto.SettingValue": {
-            "type": "object",
-            "additionalProperties": true
-        },
         "dto.SignInToken": {
             "type": "object",
             "required": [
                 "user_id"
             ],
             "properties": {
-                "application_id": {
-                    "type": "string"
-                },
-                "code": {
-                    "type": "string"
-                },
-                "domain": {
-                    "type": "string"
-                },
                 "expires_in_seconds": {
                     "description": "Default: 2592000\nOptional parameter to specify the life duration of the sign in token in seconds. By default, the duration is 30 days.\nexample: 2592000",
                     "type": "integer"
                 },
-                "id": {
-                    "type": "string"
-                },
-                "is_deleted": {
-                    "type": "boolean"
-                },
-                "jwt_config": {
-                    "$ref": "#/definitions/dto.JWTConfig"
-                },
-                "mode": {
-                    "type": "integer"
-                },
-                "schema_name": {
-                    "type": "string"
-                },
-                "session": {
-                    "$ref": "#/definitions/dto.SessionSetting"
-                },
-                "social_connections": {
-                    "$ref": "#/definitions/dto.SocialSetting"
-                },
-                "user_general_setting": {
-                    "$ref": "#/definitions/dto.UserSetting"
-                },
                 "user_id": {
                     "description": "The ID of the user that can use the newly created sign in token\nrequired: true\nexample: user_amkHacjkasdpoqe",
                     "type": "integer"
-                }
-            }
-        },
-        "dto.SocialProvider": {
-            "type": "object",
-            "properties": {
-                "auth_provider": {
-                    "type": "string"
-                },
-                "is_enable": {
-                    "type": "boolean"
-                },
-                "order": {
-                    "type": "integer"
-                },
-                "setting": {
-                    "$ref": "#/definitions/dto.SocialProviderSetting"
-                }
-            }
-        },
-        "dto.SocialProviderSetting": {
-            "type": "object",
-            "properties": {
-                "client_id": {
-                    "type": "string"
-                },
-                "client_secret": {
-                    "type": "string"
-                },
-                "directory_id": {
-                    "type": "string"
-                },
-                "is_allow": {
-                    "type": "boolean"
-                },
-                "is_block_sub_addresses": {
-                    "type": "boolean"
-                },
-                "is_use_custom_credential": {
-                    "type": "boolean"
-                },
-                "redirect_uri": {
-                    "type": "string"
-                },
-                "scopes": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                }
-            }
-        },
-        "dto.SocialSetting": {
-            "type": "object",
-            "additionalProperties": {
-                "type": "array",
-                "items": {
-                    "$ref": "#/definitions/dto.SocialProvider"
                 }
             }
         },
@@ -2116,34 +1830,15 @@
                 }
             }
         },
-        "dto.UserSetting": {
+        "dto.VerifyPassword": {
             "type": "object",
+            "required": [
+                "password"
+            ],
             "properties": {
-                "authentication_strategies": {
-                    "$ref": "#/definitions/dto.AuthenticationSetting"
-                },
-                "contact": {
-                    "$ref": "#/definitions/dto.ContactSetting"
-                },
-                "multi_factors": {
-                    "$ref": "#/definitions/dto.MultiFactorSetting"
-                },
-                "perrmission": {
-                    "$ref": "#/definitions/dto.PermissionSetting"
-                },
-                "personal": {
-                    "$ref": "#/definitions/dto.PersonalSetting"
-                },
-                "username": {
-                    "$ref": "#/definitions/dto.UsernameSetting"
-                }
-            }
-        },
-        "dto.UsernameSetting": {
-            "type": "object",
-            "properties": {
-                "username": {
-                    "$ref": "#/definitions/dto.BaseSetting"
+                "password": {
+                    "description": "The user password to verify.\nexample: \"abc@123X\"",
+                    "type": "string"
                 }
             }
         },
@@ -2275,6 +1970,32 @@
                     "description": "Message corresponding to the status code.",
                     "type": "string",
                     "example": "bad_request"
+                }
+            }
+        },
+        "utils.Paginator": {
+            "type": "object",
+            "properties": {
+                "count": {
+                    "type": "integer",
+                    "example": 100
+                },
+                "data": {},
+                "has_next": {
+                    "type": "boolean",
+                    "example": true
+                },
+                "has_previous": {
+                    "type": "boolean",
+                    "example": false
+                },
+                "page_num": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "page_size": {
+                    "type": "integer",
+                    "example": 10
                 }
             }
         },
