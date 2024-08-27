@@ -2025,6 +2025,7 @@ const docTemplate = `{
     },
     "securityDefinitions": {
         "OneAuxiliaAuth": {
+            "description": "OneAuxiliaAuth Key Format: sk_$environment_$secret value",
             "type": "apiKey",
             "name": "OneAuxiliaAuth",
             "in": "header"
