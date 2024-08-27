@@ -1460,6 +1460,7 @@ paths:
       - Users
 securityDefinitions:
   OneAuxiliaAuth:
+    description: 'OneAuxiliaAuth Key Format: sk_$environment_$secret value'
     in: header
     name: OneAuxiliaAuth
     type: apiKey
